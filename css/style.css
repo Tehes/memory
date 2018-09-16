@@ -11,37 +11,47 @@ body {
     align-content: center;
     align-items: center;
     margin: 0 auto;
-    perspective: 1500;
+    perspective: 1700;
 }
 
-.Card {
+.card {
     box-sizing: border-box;
-    background-color: #aaa;
     margin: 10px;
-    border: 1px solid #777;
     width: 150px;
     height: 150px;
     position: relative;
     transform-style: preserve-3d;
 }
 
-.CardFace {
-    position: absolute;
-    height: 100%;
+.cardface {
     width: 100%;
-    backface-visibility: hidden;
+    height: 100%;
+    border: 1px solid #777;
     transition: all .5s;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    position: absolute;
+    top: 0px;
+    left: 0px;
 }
 
 .front {
-    background: red;
+    z-index: 2;
+    background-image: url(http://img.afreecodec.com/images/v3/wp-content/uploads/2011/05/00_chrome_icon.jpg);
 }
 
-.back{
-    background: blue;
+.back {
+    z-index: 1;
+    transform: rotateY(-180deg);
+    background-image: url(http://www.digitaltrends.com/wp-content/uploads/2011/03/ie-9-icon.jpg);
+}
+
+.card:hover .front {
+    z-index: 1;
     transform: rotateY(180deg);
 }
 
-.CardFace:hover {
+.card:hover .back {
+    z-index: 2;
     transform: rotateY(0deg);
 }
