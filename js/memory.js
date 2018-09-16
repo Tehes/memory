@@ -1,7 +1,7 @@
-var Card = document.querySelectorAll(".card")[0];
+var Grid = document.querySelector("#GameGrid");
 
-Card.addEventListener("click", test);
+Grid.addEventListener("click", test);
 
-function test() {
-    this.classList.toggle("selected");
+function test(e) {
+    e.target.classList.toggle("selected");
 }
