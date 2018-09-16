@@ -1,0 +1,47 @@
+body {
+    background-color: #ddd;
+}
+
+#GameGrid {
+    max-width: 1020px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    margin: 0 auto;
+    perspective: 1500;
+}
+
+.Card {
+    box-sizing: border-box;
+    background-color: #aaa;
+    margin: 10px;
+    border: 1px solid #777;
+    width: 150px;
+    height: 150px;
+    position: relative;
+    transform-style: preserve-3d;
+}
+
+.CardFace {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    backface-visibility: hidden;
+    transition: all .5s;
+}
+
+.front {
+    background: red;
+}
+
+.back{
+    background: blue;
+    transform: rotateY(180deg);
+}
+
+.CardFace:hover {
+    transform: rotateY(0deg);
+}
