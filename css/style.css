@@ -38,12 +38,14 @@ body {
 .front {
     z-index: 2;
     background-image: url(http://img.afreecodec.com/images/v3/wp-content/uploads/2011/05/00_chrome_icon.jpg);
+    background-size: contain;
 }
 
 .back {
     z-index: 1;
     transform: rotateY(-180deg);
     background-image: url(http://www.digitaltrends.com/wp-content/uploads/2011/03/ie-9-icon.jpg);
+    background-size: contain;
 }
 
 .selected .front {
