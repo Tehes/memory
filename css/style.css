@@ -46,12 +46,12 @@ body {
     background-image: url(http://www.digitaltrends.com/wp-content/uploads/2011/03/ie-9-icon.jpg);
 }
 
-.card:hover .front {
+.selected .front {
     z-index: 1;
     transform: rotateY(180deg);
 }
 
-.card:hover .back {
+.selected .back {
     z-index: 2;
     transform: rotateY(0deg);
 }
