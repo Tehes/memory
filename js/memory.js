@@ -4,7 +4,10 @@ Grid.addEventListener("click", test);
 
 function test(e) {
     var clicked = e.target;
-    if (clicked.id !== "GameGrid") {
-        e.target.parentElement.classList.toggle("selected");
+    var selection = document.querySelectorAll(".selected");
+    if (selection.length < 2) {
+        if (clicked.id !== "GameGrid" && clicked.parentElement.classList.contains("selected") === false) {
+            clicked.parentElement.classList.toggle("selected");
+        }
     }
 }
