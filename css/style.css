@@ -3,6 +3,19 @@ body {
     color: #999;
 }
 
+header {
+    box-sizing: border-box;
+    height: 50px;
+    background-color: #ddd;
+    margin-bottom: 20px;
+    padding-top: 8px;
+    text-align: center;
+    border-bottom: 1px solid #999;
+    font-size: 2em;
+    font-family: 'Fjalla One', sans-serif;
+    color: #333;
+}
+
 #GameGrid {
     max-width: 1020px;
     display: flex;
