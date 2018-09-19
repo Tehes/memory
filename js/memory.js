@@ -1,38 +1,38 @@
-// function shuffle(array) {
-//     var currentIndex = array.length,
-//         temporaryValue, randomIndex;
-//
-//     // While there remain elements to shuffle...
-//     while (0 !== currentIndex) {
-//
-//         // Pick a remaining element...
-//         randomIndex = Math.floor(Math.random() * currentIndex);
-//         currentIndex -= 1;
-//
-//         // And swap it with the current element.
-//         temporaryValue = array[currentIndex];
-//         array[currentIndex] = array[randomIndex];
-//         array[randomIndex] = temporaryValue;
-//     }
-//
-//     return array;
-// }
-//
-// function assignMotifs() {
-//     var Motifs, Cards, i;
-//
-//     Motifs = ["apple", "avocado", "banana", "bell-pepper", "cabbage", "cauliflower", "cherry", "grapes", "kiwi", "orange", "pineapple", "pumpkin", "strawberry", "tomato", "watermelon"];
-//
-//     Motifs = Motifs.concat(Motifs);
-//     Motifs = shuffle(Motifs);
-//
-//     Cards = document.querySelectorAll(".card .back");
-//
-//     for (i = 0; i < Motifs.length; i++) {
-//         Cards[i].style.backgroundImage = "url('assets/" + Motifs[i] + ".svg')";
-//         Cards[i].parentElement.dataset.name = Motifs[i];
-//     }
-// }
+function shuffle(array) {
+    var currentIndex = array.length,
+        temporaryValue, randomIndex;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
+
+    return array;
+}
+
+function assignMotifs() {
+    var Motifs, Cards, i;
+
+    Motifs = ["apple", "avocado", "banana", "bell-pepper", "cabbage", "cauliflower", "cherry", "grapes", "kiwi", "orange", "pineapple", "pumpkin", "strawberry", "tomato", "watermelon"];
+
+    Motifs = Motifs.concat(Motifs);
+    Motifs = shuffle(Motifs);
+
+    Cards = document.querySelectorAll(".card .back");
+
+    for (i = 0; i < Motifs.length; i++) {
+        Cards[i].style.backgroundImage = "url('assets/" + Motifs[i] + ".svg')";
+        Cards[i].parentElement.dataset.name = Motifs[i];
+    }
+}
 
 function selectCards(e) {
     var clicked, selection;
@@ -62,7 +62,7 @@ function match(sel) {
 }
 
 function init() {
-    //assignMotifs();
+    assignMotifs();
 
     var Grid = document.querySelector("#GameGrid");
     Grid.addEventListener("click", selectCards);
