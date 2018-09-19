@@ -1,42 +1,44 @@
-var Grid = document.querySelector("#GameGrid");
-
 function shuffle(array) {
-  var currentIndex = array.length, temporaryValue, randomIndex;
+    var currentIndex = array.length,
+        temporaryValue, randomIndex;
 
-  // While there remain elements to shuffle...
-  while (0 !== currentIndex) {
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
 
-    // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
 
-    // And swap it with the current element.
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
-  }
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
 
-  return array;
+    return array;
 }
 
-var Motifs = ["apple", "avocado", "banana", "bell-pepper", "cabbage", "cauliflower", "cherry", "grapes", "kiwi", "orange", "pineapple", "pumpkin", "strawberry", "tomato", "watermelon"];
+function assignMotifs() {
+    var Motifs, Cards, i;
 
-Motifs = Motifs.concat(Motifs);
-Motifs = shuffle(Motifs);
+    Motifs = ["apple", "avocado", "banana", "bell-pepper", "cabbage", "cauliflower", "cherry", "grapes", "kiwi", "orange", "pineapple", "pumpkin", "strawberry", "tomato", "watermelon"];
 
-var Cards = document.querySelectorAll(".card .back");
+    Motifs = Motifs.concat(Motifs);
+    Motifs = shuffle(Motifs);
 
-for (var i = 0; i < Motifs.length; i++) {
-    Cards[i].style.backgroundImage = "url('assets/"+ Motifs[i] +".svg')";
-    Cards[i].parentElement.dataset.name = Motifs[i];
+    Cards = document.querySelectorAll(".card .back");
+
+    for (i = 0; i < Motifs.length; i++) {
+        Cards[i].style.backgroundImage = "url('assets/" + Motifs[i] + ".svg')";
+        Cards[i].parentElement.dataset.name = Motifs[i];
+    }
 }
-
-
-Grid.addEventListener("click", selectCards);
 
 function selectCards(e) {
-    var clicked = e.target;
-    var selection = document.getElementsByClassName("selected");
+    var clicked, selection;
+
+    clicked = e.target;
+    selection = document.getElementsByClassName("selected");
 
     if (selection.length < 2) {
         if (clicked.id !== "GameGrid" && clicked.parentElement.classList.contains("selected") === false) {
@@ -51,13 +53,19 @@ function selectCards(e) {
 }
 
 function match(sel) {
-    var selection = document.querySelectorAll(".selected");
-    if (selection.length === 2) {
-        if (sel[0].dataset.name === sel[1].dataset.name) {
-            sel[0].classList.add("matched");
-            sel[1].classList.add("matched");
-        }
-        sel[1].classList.remove("selected");
-        sel[0].classList.remove("selected");
+    if (sel[0].dataset.name === sel[1].dataset.name) {
+        sel[0].classList.add("matched");
+        sel[1].classList.add("matched");
     }
+    sel[1].classList.remove("selected");
+    sel[0].classList.remove("selected");
 }
+
+function init() {
+    assignMotifs();
+
+    var Grid = document.querySelector("#GameGrid");
+    Grid.addEventListener("click", selectCards);
+}
+
+init();
