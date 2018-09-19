@@ -1,6 +1,18 @@
 body {
     background-color: #ddd;
     color: #999;
+    font-family: 'Fjalla One', sans-serif;
+    color: #333;
+    font-size: 1.1em;
+}
+
+a:link, a:visited {
+    color: #333;
+    font-family: 'Fjalla One', sans-serif;
+}
+
+a:hover, a:active {
+    color: #0288d1;
 }
 
 header {
@@ -81,6 +93,12 @@ header {
 .matched .front {
     display: none;
 }
+
 .matched .back {
     transform: rotateY(0deg);
+}
+
+footer div {
+    margin-top: 20px;
+    text-align: center;
 }
