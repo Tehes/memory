@@ -62,7 +62,7 @@ function match(sel) {
 }
 
 function init() {
-    assignMotifs();
+    //assignMotifs();
 
     var Grid = document.querySelector("#GameGrid");
     Grid.addEventListener("click", selectCards);
