@@ -48,8 +48,11 @@ body {
 .back {
     z-index: 1;
     transform: rotateY(-180deg);
-    background-image: url(http://placekitten.com/150/150);
-    background-size: contain;
+    background-image: url(../assets/banana.svg);
+    background-color: white;
+    background-size: 90% 90%;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .selected .front {
@@ -59,5 +62,12 @@ body {
 
 .selected .back {
     z-index: 2;
+    transform: rotateY(0deg);
+}
+
+.matched .front {
+    display: none;
+}
+.matched .back {
     transform: rotateY(0deg);
 }
