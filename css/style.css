@@ -97,6 +97,16 @@ header {
 
 .matched .back {
     transform: rotateY(0deg);
+    animation: matchSignal 1s;
+}
+
+@keyframes matchSignal {
+  0%, 100% {
+    background-color: white;
+  }
+  50% {
+    background-color: #96CD82;
+  }
 }
 
 footer div {
