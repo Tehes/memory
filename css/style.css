@@ -4,11 +4,11 @@ body {
     font-family: 'Fjalla One', sans-serif;
     color: #333;
     font-size: 1.1em;
+    line-height: 1.5;
 }
 
 a:link, a:visited {
     color: #666;
-    font-family: 'Fjalla One', sans-serif;
 }
 
 a:hover, a:active {
@@ -20,11 +20,10 @@ header {
     height: 50px;
     background-color: #ddd;
     margin-bottom: 20px;
-    padding-top: 8px;
+    padding-top: 5px;
     text-align: center;
     border-bottom: 1px solid #999;
     font-size: 2em;
-    font-family: 'Fjalla One', sans-serif;
     color: #333;
 }
 
@@ -43,9 +42,10 @@ header {
 
 .card {
     box-sizing: border-box;
-    margin: 10px;
-    width: 150px;
-    height: 150px;
+    margin: 1%;
+    flex: 0 1 14%;
+    height: 0;
+    padding-bottom: 14%;
     position: relative;
     transform-style: preserve-3d;
 }
@@ -103,4 +103,5 @@ footer div {
     color: #666;
     margin-top: 20px;
     text-align: center;
+    font-size: 0.8em;
 }
