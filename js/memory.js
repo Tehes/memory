@@ -48,7 +48,7 @@ function selectCards(e) {
     if (selection.length === 2) {
         setTimeout(function() {
             match(selection);
-        }, 1000);
+        }, 700);
     }
 }
 
@@ -57,8 +57,11 @@ function match(sel) {
         sel[0].classList.add("matched");
         sel[1].classList.add("matched");
     }
-    sel[1].classList.remove("selected");
-    sel[0].classList.remove("selected");
+    setTimeout(function() {
+        sel[1].classList.remove("selected");
+        sel[0].classList.remove("selected");   
+        }, 300);
+    
 }
 
 function init() {
