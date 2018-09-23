@@ -119,7 +119,7 @@ footer div {
 
 @media screen and (max-device-width: 480px) and (orientation: portrait) {
     .card {
-        flex: 0 1 19%;
-        padding-bottom: 19%;
+        flex: 0 1 18%;
+        padding-bottom: 18%;
     }
 }
