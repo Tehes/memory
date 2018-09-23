@@ -41,7 +41,8 @@ function selectCards(e) {
     selection = document.getElementsByClassName("selected");
 
     if (selection.length < 2) {
-        if (clicked.id !== "GameGrid" && clicked.parentElement.classList.contains("selected") === false) {
+        if (clicked.parentElement.classList.contains("selected") === false &&
+            clicked.classList.contains("front") === true) {
             clicked.parentElement.classList.add("selected");
         }
     }
@@ -59,9 +60,9 @@ function match(sel) {
     }
     setTimeout(function() {
         sel[1].classList.remove("selected");
-        sel[0].classList.remove("selected");   
-        }, 300);
-    
+        sel[0].classList.remove("selected");
+    }, 300);
+
 }
 
 function init() {
