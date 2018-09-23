@@ -81,10 +81,17 @@ function reset() {
     allCards = document.querySelectorAll(".card");
 
     for (i = 0; i < allCards.length; i++) {
+        
+        allCards[i].classList.add("selected");
         allCards[i].classList.remove("matched");
-        allCards[i].classList.remove("selected");
+        
+        (function(i){
+        setTimeout(function(){
+                allCards[i].classList.remove("selected");
+                }, 500);
+        })(i);
     }
-    assignMotifs();
+    setTimeout(assignMotifs,800);
 
 }
 
