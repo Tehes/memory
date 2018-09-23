@@ -101,12 +101,13 @@ header {
 }
 
 @keyframes matchSignal {
-  0%, 100% {
-    background-color: white;
-  }
-  50% {
-    background-color: #96CD82;
-  }
+    0%, 100% {
+        background-color: white;
+    }
+
+    50% {
+        background-color: #96CD82;
+    }
 }
 
 footer div {
@@ -114,4 +115,11 @@ footer div {
     margin-top: 20px;
     text-align: center;
     font-size: 0.8em;
+}
+
+@media screen and (max-device-width: 480px) and (orientation: portrait) {
+    .card {
+        flex: 0 1 19%;
+        padding-bottom: 19%;
+    }
 }

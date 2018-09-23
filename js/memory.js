@@ -71,6 +71,21 @@ function init() {
 
     var Grid = document.querySelector("#GameGrid");
     Grid.addEventListener("click", selectCards);
+    var header = document.querySelector("header");
+    header.addEventListener("click", reset);
+}
+
+function reset() {
+    var allCards, i;
+
+    allCards = document.querySelectorAll(".card");
+
+    for (i = 0; i < allCards.length; i++) {
+        allCards[i].classList.remove("matched");
+        allCards[i].classList.remove("selected");
+    }
+    assignMotifs();
+
 }
 
 init();
