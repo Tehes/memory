@@ -38,7 +38,7 @@ function selectCards(e) {
     var clicked, selection;
 
     clicked = e.target;
-    selection = document.getElementsByClassName("selected");
+    selection = document.querySelectorAll(".selected");
 
     if (selection.length < 2) {
         if (clicked.parentElement.classList.contains("selected") === false &&
@@ -46,6 +46,7 @@ function selectCards(e) {
             clicked.parentElement.classList.add("selected");
         }
     }
+    selection = document.querySelectorAll(".selected");
     if (selection.length === 2) {
         setTimeout(function() {
             match(selection);
