@@ -25,6 +25,7 @@ header {
     border-bottom: 1px solid #999;
     font-size: 2em;
     color: #333;
+    cursor: pointer;
 }
 
 #GameGrid {
@@ -117,9 +118,16 @@ footer div {
     font-size: 0.8em;
 }
 
+footer br {
+    display: none;
+}
+
 @media screen and (max-device-width: 480px) and (orientation: portrait) {
     .card {
         flex: 0 1 17%;
         padding-bottom: 17%;
+    }
+    footer br {
+        display: block;
     }
 }
