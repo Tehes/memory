@@ -77,24 +77,26 @@ function init() {
 
 function reset() {
     var allCards, i, selection;
-    
+
     selection = document.querySelectorAll(".selected")[0];
-    if (selection) {selection.classList.remove("selected");}
+    if (selection) {
+        selection.classList.remove("selected");
+    }
 
     allCards = document.querySelectorAll(".matched");
 
     for (i = 0; i < allCards.length; i++) {
-        
+
         allCards[i].classList.add("selected");
         allCards[i].classList.remove("matched");
-        
-        (function(i){
-        setTimeout(function(){
+
+        (function(i) {
+            setTimeout(function() {
                 allCards[i].classList.remove("selected");
-                }, 500);
+            }, 500);
         })(i);
     }
-    setTimeout(assignMotifs,510);
+    setTimeout(assignMotifs, 510);
 
 }
 
