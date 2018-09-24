@@ -76,9 +76,12 @@ function init() {
 }
 
 function reset() {
-    var allCards, i;
+    var allCards, i, selection;
+    
+    selection = document.querySelectorAll(".selected")[0];
+    if (selection) {selection.classList.remove("selected");}
 
-    allCards = document.querySelectorAll(".card");
+    allCards = document.querySelectorAll(".matched");
 
     for (i = 0; i < allCards.length; i++) {
         
@@ -91,7 +94,7 @@ function reset() {
                 }, 500);
         })(i);
     }
-    setTimeout(assignMotifs,800);
+    setTimeout(assignMotifs,510);
 
 }
 
