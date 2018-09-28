@@ -16,15 +16,30 @@ a:hover, a:active {
 }
 
 header {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 10px;
     box-sizing: border-box;
     height: 50px;
     background-color: #ddd;
     margin-bottom: 20px;
     padding-top: 5px;
-    text-align: center;
     border-bottom: 1px solid #999;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+}
+
+header h3 {
     font-size: 2em;
     color: #333;
+}
+
+header div {
+    width: 85px;
+}
+
+header #restart {
     cursor: pointer;
 }
 

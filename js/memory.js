@@ -44,6 +44,10 @@ function selectCards(e) {
         if (clicked.parentElement.classList.contains("selected") === false &&
             clicked.classList.contains("front") === true) {
             clicked.parentElement.classList.add("selected");
+            if (timerRunning === false) {
+                timer = window.setInterval(updateTimer, 1000);
+                timerRunning = true;
+            }
         }
     }
     selection = document.querySelectorAll(".selected");
@@ -66,12 +70,45 @@ function match(sel) {
 
 }
 
+function updateTimer() {
+    var minzero, seczero;
+    seconds++;
+
+    if (seconds === 60) {
+        minutes++;
+        seconds = 0;
+    }
+    if (seconds < 10) {
+        seczero = "0";
+    }
+    else {
+        seczero = "";
+    }
+    if (minutes < 10) {
+        minzero = "0";
+    }
+    else {
+        minzero = "";
+    }
+    var time = document.querySelector("#time");
+    time.textContent = minzero + minutes + ":" + seczero + seconds;
+
+    var matched = document.querySelectorAll(".matched")
+    if (matched.length === 30) {
+        window.clearInterval(timer);
+        timerRunning = false;
+    }
+}
+
 function init() {
+    timerRunning = false;
+    seconds = 0;
+    minutes = 0;
     assignMotifs();
 
     var Grid = document.querySelector("#GameGrid");
     Grid.addEventListener("click", selectCards);
-    var header = document.querySelector("header");
+    var header = document.querySelector("#restart");
     header.addEventListener("click", reset);
 }
 
@@ -97,7 +134,12 @@ function reset() {
         })(i);
     }
     setTimeout(assignMotifs, 510);
-
+    window.clearInterval(timer);
+    timerRunning = false;
+    seconds = 0;
+    minutes = 0;
+    var time = document.querySelector("#time");
+    time.textContent = "00:00";
 }
 
 init();
