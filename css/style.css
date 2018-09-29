@@ -36,7 +36,7 @@ header h3 {
 }
 
 header div {
-    width: 85px;
+    width: 86px;
 }
 
 header #restart {
@@ -138,6 +138,9 @@ footer br {
 }
 
 @media screen and (max-device-width: 480px) and (orientation: portrait) {
+    header h3 {
+        font-size: 1.5em;
+    }
     .card {
         flex: 0 1 17%;
         padding-bottom: 17%;
