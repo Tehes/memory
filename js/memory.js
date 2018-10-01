@@ -80,14 +80,12 @@ function updateTimer() {
     }
     if (seconds < 10) {
         seczero = "0";
-    }
-    else {
+    } else {
         seczero = "";
     }
     if (minutes < 10) {
         minzero = "0";
-    }
-    else {
+    } else {
         minzero = "";
     }
     var time = document.querySelector("#time");
@@ -114,7 +112,7 @@ function init() {
 }
 
 function reset() {
-    var allCards, i, selection;
+    var allCards, i, selection, time;
 
     selection = document.querySelectorAll(".selected")[0];
     if (selection) {
@@ -139,7 +137,7 @@ function reset() {
     timerRunning = false;
     seconds = 0;
     minutes = 0;
-    var time = document.querySelector("#time");
+    time = document.querySelector("#time");
     time.textContent = "00:00";
 }
 
