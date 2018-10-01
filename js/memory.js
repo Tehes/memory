@@ -93,7 +93,7 @@ function updateTimer() {
     var time = document.querySelector("#time");
     time.textContent = minzero + minutes + ":" + seczero + seconds;
 
-    var matched = document.querySelectorAll(".matched")
+    var matched = document.querySelectorAll(".matched");
     if (matched.length === 30) {
         window.clearInterval(timer);
         timerRunning = false;
@@ -107,8 +107,9 @@ function init() {
     assignMotifs();
 
     var Grid = document.querySelector("#GameGrid");
-    Grid.addEventListener("click", selectCards);
     var header = document.querySelector("#restart");
+
+    Grid.addEventListener("click", selectCards);
     header.addEventListener("click", reset);
 }
 
