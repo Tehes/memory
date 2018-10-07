@@ -5,6 +5,9 @@ body {
     color: #333;
     font-size: 1.1em;
     line-height: 1.5;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
 }
 
 a:link, a:visited {
