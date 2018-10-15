@@ -71,10 +71,17 @@ function init() {
     assignMotifs();
 
     var Grid = document.querySelector("#GameGrid");
-    var header = document.querySelector("#restart");
+    var restart = document.querySelector("#restart");
 
     Grid.addEventListener("click", selectCards);
-    header.addEventListener("click", reset);
+    restart.addEventListener("click", reset);
+    document.addEventListener('DOMContentLoaded', loadStoredVars);
+}
+
+function loadStoredVars() {
+    var bestTime = localStorage.getItem("bestTime") || '--:--';
+    var best = document.querySelector("#best");
+    best.textContent = bestTime;
 }
 
 function reset() {
@@ -100,12 +107,14 @@ function reset() {
     }
     setTimeout(assignMotifs, 510);
     timer.reset();
+    loadStoredVars();
 }
 
 var timer = {
     running: false,
     seconds: 0,
     minutes: 0,
+    time: document.querySelector("#time"),
     start: function() {
         if (this.running === false) {
             timer.instance = window.setInterval(
@@ -132,12 +141,12 @@ var timer = {
         if (this.minutes < 10) {
             minzero = "0";
         }
-        var time = document.querySelector("#time");
-        time.textContent = minzero + this.minutes + ":" + seczero + this.seconds;
+        this.time.textContent = minzero + this.minutes + ":" + seczero + this.seconds;
 
         var matched = document.querySelectorAll(".matched");
         if (matched.length === 30) {
             this.stop();
+            localStorage.setItem("bestTime", this.time.textContent);
         }
     },
     stop: function() {
@@ -148,8 +157,7 @@ var timer = {
         this.stop();
         this.seconds = 0;
         this.minutes = 0;
-        time = document.querySelector("#time");
-        time.textContent = "00:00";
+        this.time.textContent = "00:00";
     }
 };
 

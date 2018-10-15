@@ -21,25 +21,32 @@ a:hover, a:active {
 header {
     max-width: 960px;
     margin: 0 auto;
-    padding: 0 10px;
     box-sizing: border-box;
-    height: 50px;
     background-color: #ddd;
     margin-bottom: 20px;
-    padding-top: 5px;
+    padding: 10px;
     border-bottom: 1px solid #999;
     display: flex;
-    align-items: baseline;
-    justify-content: space-between;
+    align-items: center;
+    justify-content: flex-end;
 }
 
 header h3 {
     font-size: 2em;
     color: #333;
+    flex: 1;
 }
 
 header div {
-    width: 86px;
+    padding: 5px 5px 5px 5px;
+    margin: 0 5px;
+    background-color: #CCC;
+    text-align: center;
+    min-width: 90px;
+}
+
+header div:last-child {
+    margin: 0 0 0 5px;
 }
 
 header #restart {
