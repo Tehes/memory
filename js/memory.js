@@ -79,9 +79,28 @@ function init() {
 }
 
 function loadStoredVars() {
-    var bestTime = localStorage.getItem("bestTime") || '--:--';
+    var bestMin, bestSec, minzero = "",
+        seczero = "";
+    bestMin = localStorage.getItem("bestTimeMins") || "--";
+    bestSec = localStorage.getItem("bestTimeSecs") || "--";
+
+    if (bestMin.length === 1) {
+        minzero = "0";
+    }
+    if (bestSec.length === 1) {
+        seczero = "0";
+    }
+
     var best = document.querySelector("#best");
-    best.textContent = bestTime;
+    best.textContent = minzero + bestMin + ":" + seczero + bestSec;
+}
+
+function solve() {
+    var cards = document.querySelectorAll(".card");
+    var i;
+    for (i = 0; i < cards.length; i++) {
+        cards[i].classList.add("matched");
+    }
 }
 
 function reset() {
@@ -141,12 +160,25 @@ var timer = {
         if (this.minutes < 10) {
             minzero = "0";
         }
+        if (this.minutes === 60) {
+            this.stop();
+        }
+
         this.time.textContent = minzero + this.minutes + ":" + seczero + this.seconds;
 
         var matched = document.querySelectorAll(".matched");
         if (matched.length === 30) {
             this.stop();
-            localStorage.setItem("bestTime", this.time.textContent);
+
+            var oldbestMin = localStorage.getItem("bestTimeMins") || 60;
+            var oldbestSec = localStorage.getItem("bestTimeSecs") || 60;
+
+            if (this.minutes < oldbestMin || this.minutes === 0) {
+                if (this.seconds < oldbestSec) {
+                    localStorage.setItem("bestTimeMins", this.minutes);
+                    localStorage.setItem("bestTimeSecs", this.seconds);
+                }
+            }
         }
     },
     stop: function() {
