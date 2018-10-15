@@ -173,7 +173,7 @@ var timer = {
             var oldbestMin = localStorage.getItem("bestTimeMins") || 60;
             var oldbestSec = localStorage.getItem("bestTimeSecs") || 60;
 
-            if (this.minutes < oldbestMin || this.minutes === 0) {
+            if (this.minutes <= oldbestMin) {
                 if (this.seconds < oldbestSec) {
                     localStorage.setItem("bestTimeMins", this.minutes);
                     localStorage.setItem("bestTimeSecs", this.seconds);
