@@ -149,7 +149,13 @@ footer br {
 
 @media screen and (max-device-width: 480px) and (orientation: portrait) {
     header h3 {
-        font-size: 1.5em;
+        display: none;
+    }
+    header {
+        justify-content: space-around;
+    }
+    #restart {
+        margin: 0 5px 0 0;
     }
     .card {
         flex: 0 1 17%;
