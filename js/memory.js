@@ -67,17 +67,6 @@ function match(sel) {
 
 }
 
-function init() {
-    assignMotifs();
-
-    var Grid = document.querySelector("#GameGrid");
-    var restart = document.querySelector("#restart");
-
-    Grid.addEventListener("click", selectCards);
-    restart.addEventListener("click", reset);
-    document.addEventListener('DOMContentLoaded', loadStoredVars);
-}
-
 function loadStoredVars() {
     var bestMin, bestSec, minzero = "",
         seczero = "";
@@ -128,6 +117,23 @@ function reset() {
     timer.reset();
     loadStoredVars();
 }
+
+/*----------------------------------------*/
+
+var memory = {
+    init: function() {
+        assignMotifs();
+
+        var Grid = document.querySelector("#GameGrid");
+        var restart = document.querySelector("#restart");
+
+        Grid.addEventListener("click", selectCards);
+        restart.addEventListener("click", reset);
+        document.addEventListener('DOMContentLoaded', loadStoredVars);
+    }
+};
+
+/*----------------------------------------*/
 
 var timer = {
     running: false,
@@ -193,4 +199,4 @@ var timer = {
     }
 };
 
-init();
+memory.init();
