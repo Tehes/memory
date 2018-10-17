@@ -1,3 +1,7 @@
+/* ----------------------------------------------
+helper functions
+------------------------------------------------*/
+
 function shuffle(array) {
     var currentIndex = array.length,
         temporaryValue, randomIndex;
@@ -18,122 +22,115 @@ function shuffle(array) {
     return array;
 }
 
-function assignMotifs() {
-    var Motifs, Cards, i;
-
-    Motifs = ["apple", "avocado", "banana", "bell-pepper", "cabbage", "cauliflower", "cherry", "grapes", "kiwi", "orange", "pineapple", "pumpkin", "strawberry", "tomato", "watermelon"];
-
-    Motifs = Motifs.concat(Motifs);
-    Motifs = shuffle(Motifs);
-
-    Cards = document.querySelectorAll(".card .back");
-
-    for (i = 0; i < Motifs.length; i++) {
-        Cards[i].style.backgroundImage = "url('assets/" + Motifs[i] + ".svg')";
-        Cards[i].parentElement.dataset.name = Motifs[i];
-    }
-}
-
-function selectCards(e) {
-    var clicked, selection;
-
-    clicked = e.target;
-    selection = document.querySelectorAll(".selected");
-
-    if (selection.length < 2) {
-        if (clicked.parentElement.classList.contains("selected") === false &&
-            clicked.classList.contains("front") === true) {
-            clicked.parentElement.classList.add("selected");
-            timer.start();
-        }
-    }
-    selection = document.querySelectorAll(".selected");
-    if (selection.length === 2) {
-        setTimeout(function() {
-            match(selection);
-        }, 700);
-    }
-}
-
-function match(sel) {
-    if (sel[0].dataset.name === sel[1].dataset.name) {
-        sel[0].classList.add("matched");
-        sel[1].classList.add("matched");
-    }
-    setTimeout(function() {
-        sel[1].classList.remove("selected");
-        sel[0].classList.remove("selected");
-    }, 300);
-
-}
-
-function loadStoredVars() {
-    var bestMin, bestSec, minzero = "",
-        seczero = "";
-    bestMin = localStorage.getItem("bestTimeMins") || "--";
-    bestSec = localStorage.getItem("bestTimeSecs") || "--";
-
-    if (bestMin.length === 1) {
-        minzero = "0";
-    }
-    if (bestSec.length === 1) {
-        seczero = "0";
-    }
-
-    var best = document.querySelector("#best");
-    best.textContent = minzero + bestMin + ":" + seczero + bestSec;
-}
-
-function solve() {
-    var cards = document.querySelectorAll(".card");
-    var i;
-    for (i = 0; i < cards.length; i++) {
-        cards[i].classList.add("matched");
-    }
-}
-
-function reset() {
-    var allCards, i, selection, time;
-
-    selection = document.querySelectorAll(".selected")[0];
-    if (selection) {
-        selection.classList.remove("selected");
-    }
-
-    allCards = document.querySelectorAll(".matched");
-
-    for (i = 0; i < allCards.length; i++) {
-
-        allCards[i].classList.add("selected");
-        allCards[i].classList.remove("matched");
-
-        (function(i) {
-            setTimeout(function() {
-                allCards[i].classList.remove("selected");
-            }, 500);
-        })(i);
-    }
-    setTimeout(assignMotifs, 510);
-    timer.reset();
-    loadStoredVars();
-}
-
-/*----------------------------------------*/
+/* ----------------------------------------------
+Memory Object
+------------------------------------------------*/
 
 var memory = {
     init: function() {
-        assignMotifs();
+        this.assignMotifs();
 
         var Grid = document.querySelector("#GameGrid");
         var restart = document.querySelector("#restart");
 
-        Grid.addEventListener("click", selectCards);
-        restart.addEventListener("click", reset);
-        document.addEventListener('DOMContentLoaded', loadStoredVars);
+        Grid.addEventListener("click", this.selectCards);
+        restart.addEventListener("click", this.reset);
+        document.addEventListener('DOMContentLoaded', this.loadStoredVars);
+    },
+    loadStoredVars: function() {
+        var bestMin, bestSec, minzero = "", seczero = "";
+        bestMin = localStorage.getItem("bestTimeMins") || "--";
+        bestSec = localStorage.getItem("bestTimeSecs") || "--";
+
+        if (bestMin.length === 1) {
+            minzero = "0";
+        }
+        if (bestSec.length === 1) {
+            seczero = "0";
+        }
+
+        var best = document.querySelector("#best");
+        best.textContent = minzero + bestMin + ":" + seczero + bestSec;
+    },
+    assignMotifs: function() {
+        var Motifs, Cards, i;
+
+        Motifs = ["apple", "avocado", "banana", "bell-pepper", "cabbage", "cauliflower", "cherry", "grapes", "kiwi", "orange", "pineapple", "pumpkin", "strawberry", "tomato", "watermelon"];
+
+        Motifs = Motifs.concat(Motifs);
+        Motifs = shuffle(Motifs);
+
+        Cards = document.querySelectorAll(".card .back");
+
+        for (i = 0; i < Motifs.length; i++) {
+            Cards[i].style.backgroundImage = "url('assets/" + Motifs[i] + ".svg')";
+            Cards[i].parentElement.dataset.name = Motifs[i];
+        }
+    },
+    selectCards: function(e) {
+        var clicked, selection;
+
+        clicked = e.target;
+        selection = document.querySelectorAll(".selected");
+
+        if (selection.length < 2) {
+            if (clicked.parentElement.classList.contains("selected") === false &&
+                clicked.classList.contains("front") === true) {
+                clicked.parentElement.classList.add("selected");
+                timer.start();
+            }
+        }
+        selection = document.querySelectorAll(".selected");
+        if (selection.length === 2) {
+            setTimeout(function() {
+                if (selection[0].dataset.name === selection[1].dataset.name) {
+                    selection[0].classList.add("matched");
+                    selection[1].classList.add("matched");
+                }
+                setTimeout(function() {
+                    selection[1].classList.remove("selected");
+                    selection[0].classList.remove("selected");
+                }, 300);
+            }, 700);
+        }
+    },
+    reset: function() {
+        var allCards, i, selection, time;
+
+        selection = document.querySelectorAll(".selected")[0];
+        if (selection) {
+            selection.classList.remove("selected");
+        }
+
+        allCards = document.querySelectorAll(".matched");
+
+        for (i = 0; i < allCards.length; i++) {
+
+            allCards[i].classList.add("selected");
+            allCards[i].classList.remove("matched");
+
+            (function(i) {
+                setTimeout(function() {
+                    allCards[i].classList.remove("selected");
+                }, 500);
+            })(i);
+        }
+        setTimeout(this.assignMotifs, 510);
+        timer.reset();
+        this.loadStoredVars();
+    },
+    solve: function() {
+        var cards = document.querySelectorAll(".card");
+        var i;
+        for (i = 0; i < cards.length; i++) {
+            cards[i].classList.add("matched");
+        }
     }
 };
 
-/*----------------------------------------*/
+/* ----------------------------------------------
+Timer object
+------------------------------------------------*/
 
 var timer = {
     running: false,
