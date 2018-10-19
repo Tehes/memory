@@ -34,7 +34,7 @@ var memory = {
         var restart = document.querySelector("#restart");
 
         Grid.addEventListener("click", this.selectCards);
-        restart.addEventListener("click", this.reset);
+        restart.addEventListener("click", this.reset.bind(this));
         document.addEventListener('DOMContentLoaded', this.loadStoredVars);
     },
     loadStoredVars: function() {
@@ -118,6 +118,7 @@ var memory = {
         setTimeout(this.assignMotifs, 510);
         timer.reset();
         this.loadStoredVars();
+
     },
     solve: function() {
         var cards = document.querySelectorAll(".card");
@@ -139,12 +140,7 @@ var timer = {
     time: document.querySelector("#time"),
     start: function() {
         if (this.running === false) {
-            timer.instance = window.setInterval(
-                (function(self) {
-                    return function() {
-                        self.update();
-                    };
-                })(this), 1000);
+            timer.instance = window.setInterval(this.update.bind(this), 1000);
             this.running = true;
         }
     },
