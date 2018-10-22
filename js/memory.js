@@ -72,6 +72,13 @@ var memory = {
 
         clicked = e.target;
         selection = document.querySelectorAll(".selected");
+        
+        if (selection.length === 2) {
+        selection[1].classList.remove("selected");
+        selection[0].classList.remove("selected");
+        }
+                
+        selection = document.querySelectorAll(".selected");        
 
         if (selection.length < 2) {
             if (clicked.parentElement.classList.contains("selected") === false &&
@@ -87,11 +94,8 @@ var memory = {
                     selection[0].classList.add("matched");
                     selection[1].classList.add("matched");
                 }
-                setTimeout(function() {
-                    selection[1].classList.remove("selected");
-                    selection[0].classList.remove("selected");
-                }, 300);
-            }, 700);
+                
+            }, 500);
         }
     },
     reset: function() {
