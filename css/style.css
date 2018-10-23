@@ -124,7 +124,7 @@ header #restart {
 
 .matched .back {
     transform: rotateY(0deg);
-    animation: matchSignal 1s;
+    animation: matchSignal 0.5s;
 }
 
 @keyframes matchSignal {

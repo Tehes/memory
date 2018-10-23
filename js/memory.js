@@ -38,7 +38,8 @@ var memory = {
         document.addEventListener('DOMContentLoaded', this.loadStoredVars);
     },
     loadStoredVars: function() {
-        var bestMin, bestSec, minzero = "", seczero = "";
+        var bestMin, bestSec, minzero = "",
+            seczero = "";
         bestMin = localStorage.getItem("bestTimeMins") || "--";
         bestSec = localStorage.getItem("bestTimeSecs") || "--";
 
@@ -71,14 +72,15 @@ var memory = {
         var clicked, selection;
 
         clicked = e.target;
+
         selection = document.querySelectorAll(".selected");
-        
+
         if (selection.length === 2) {
-        selection[1].classList.remove("selected");
-        selection[0].classList.remove("selected");
+            selection[1].classList.remove("selected");
+            selection[0].classList.remove("selected");
         }
-                
-        selection = document.querySelectorAll(".selected");        
+
+        selection = document.querySelectorAll(".selected");
 
         if (selection.length < 2) {
             if (clicked.parentElement.classList.contains("selected") === false &&
@@ -87,6 +89,13 @@ var memory = {
                 timer.start();
             }
         }
+
+        //clicked.parentElement.addEventListener("transitionend", testfunc);
+
+        function testfunc() {
+            console.log(this);
+        }
+
         selection = document.querySelectorAll(".selected");
         if (selection.length === 2) {
             setTimeout(function() {
@@ -94,19 +103,14 @@ var memory = {
                     selection[0].classList.add("matched");
                     selection[1].classList.add("matched");
                 }
-                
+
             }, 500);
         }
     },
     reset: function() {
         var allCards, i, selection, time;
 
-        selection = document.querySelectorAll(".selected")[0];
-        if (selection) {
-            selection.classList.remove("selected");
-        }
-
-        allCards = document.querySelectorAll(".matched");
+        allCards = document.querySelectorAll(".matched, .selected");
 
         for (i = 0; i < allCards.length; i++) {
 
@@ -116,7 +120,7 @@ var memory = {
             (function(i) {
                 setTimeout(function() {
                     allCards[i].classList.remove("selected");
-                }, 500);
+                }, 10);
             })(i);
         }
         setTimeout(this.assignMotifs, 510);
