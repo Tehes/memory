@@ -94,11 +94,6 @@ var memory = {
                 }, 300);
             }, 700);
         }
-        match = document.querySelectorAll(".matched");
-        if (match.length === 30) {
-            this.removeEventListener("click", memory.selectCards);
-        }
-
     },
     reset: function() {
         var allCards, i, selection, time;
