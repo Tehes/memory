@@ -72,14 +72,6 @@ var memory = {
         var clicked, selection;
 
         clicked = e.target;
-
-        selection = document.querySelectorAll(".selected");
-
-        if (selection.length === 2) {
-            selection[1].classList.remove("selected");
-            selection[0].classList.remove("selected");
-        }
-
         selection = document.querySelectorAll(".selected");
 
         if (selection.length < 2) {
@@ -90,12 +82,6 @@ var memory = {
             }
         }
 
-        //clicked.parentElement.addEventListener("transitionend", testfunc);
-
-        function testfunc() {
-            console.log(this);
-        }
-
         selection = document.querySelectorAll(".selected");
         if (selection.length === 2) {
             setTimeout(function() {
@@ -103,8 +89,11 @@ var memory = {
                     selection[0].classList.add("matched");
                     selection[1].classList.add("matched");
                 }
-
-            }, 500);
+                setTimeout(function() {
+                    selection[1].classList.remove("selected");
+                    selection[0].classList.remove("selected");
+                }, 300);
+            }, 700);
         }
     },
     reset: function() {
