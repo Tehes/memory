@@ -38,8 +38,7 @@ var memory = {
         document.addEventListener('DOMContentLoaded', this.loadStoredVars);
     },
     loadStoredVars: function() {
-        var bestMin, bestSec, minzero = "",
-            seczero = "";
+        var bestMin, bestSec, minzero = "", seczero = "";
         bestMin = localStorage.getItem("bestTimeMins") || "--";
         bestSec = localStorage.getItem("bestTimeSecs") || "--";
 
@@ -69,7 +68,7 @@ var memory = {
         }
     },
     selectCards: function(e) {
-        var clicked, selection;
+        var clicked, selection, match;
 
         clicked = e.target;
         selection = document.querySelectorAll(".selected");
@@ -95,6 +94,11 @@ var memory = {
                 }, 300);
             }, 700);
         }
+        match = document.querySelectorAll(".matched");
+        if (match.length === 30) {
+            this.removeEventListener("click", memory.selectCards);
+        }
+
     },
     reset: function() {
         var allCards, i, selection, time;
