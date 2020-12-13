@@ -46,12 +46,24 @@ header div {
     min-width: 90px;
 }
 
+header div.active {
+    border: 1px solid #666;
+}
+
+.hidden {
+    display: none;
+}
+
 header div:last-child {
     margin: 0 0 0 5px;
 }
 
 header #restart {
     cursor: pointer;
+}
+
+#restart:active {
+    background-color: #BBB;
 }
 
 #GameGrid {

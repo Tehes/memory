@@ -27,15 +27,34 @@ Memory Object
 ------------------------------------------------*/
 
 var memory = {
+    playerNum: 2,
+    activePlayer: 1,
     init: function() {
+        var askForPlayerNum = prompt("How many players wanna play", 1);
+        this.playerNum = parseInt(askForPlayerNum);
+        if (this.playerNum > 2) { this.playerNum = 2; }
         this.assignMotifs();
 
         var Grid = document.querySelector("#GameGrid");
         var restart = document.querySelector("#restart");
 
-        Grid.addEventListener("click", this.selectCards);
+        var time = document.querySelector("#time");
+        var best = document.querySelector("#best");
+        var player1 = document.querySelector("#pairs_1");
+        var player2 = document.querySelector("#pairs_2");
+
+        Grid.addEventListener("click", this.selectCards.bind(this));
         restart.addEventListener("click", this.reset.bind(this));
-        document.addEventListener('DOMContentLoaded', this.loadStoredVars);
+
+        if (this.playerNum === 1) {
+            document.addEventListener('DOMContentLoaded', this.loadStoredVars);
+        }
+        else if (this.playerNum === 2) {
+            time.classList.toggle("hidden");
+            best.classList.toggle("hidden");
+            player1.classList.toggle("hidden");
+            player2.classList.toggle("hidden");
+        }
     },
     loadStoredVars: function() {
         var bestMin, bestSec, minzero = "", seczero = "";
@@ -49,7 +68,7 @@ var memory = {
             seczero = "0";
         }
 
-        var best = document.querySelector("#best");
+        var best = document.querySelector("#best span");
         best.textContent = minzero + bestMin + ":" + seczero + bestSec;
     },
     assignMotifs: function() {
@@ -77,7 +96,7 @@ var memory = {
             if (clicked.parentElement.classList.contains("selected") === false &&
                 clicked.classList.contains("front") === true) {
                 clicked.parentElement.classList.add("selected");
-                timer.start();
+                    timer.start();
             }
         }
 
@@ -87,12 +106,28 @@ var memory = {
                 if (selection[0].dataset.name === selection[1].dataset.name) {
                     selection[0].classList.add("matched");
                     selection[1].classList.add("matched");
+
+                    if (this.playerNum === 2) {
+                        var pairsCounter = document.querySelector("#pairs_"+ this.activePlayer +" span");
+                        pairsCounter.textContent++;
+                    }
+                }
+                else {
+                    if (this.playerNum === 2) {
+                        this.activePlayer = ( this.activePlayer == 1 ? 2 : 1);
+                    }
                 }
                 setTimeout(function() {
                     selection[1].classList.remove("selected");
                     selection[0].classList.remove("selected");
-                }, 300);
-            }, 700);
+
+                    var player1 = document.querySelector("#pairs_1");
+                    var player2 = document.querySelector("#pairs_2");
+
+                    player1.classList.toggle("active");
+                    player2.classList.toggle("active");
+                }.bind(this), 300);
+            }.bind(this), 700);
         }
     },
     reset: function() {
@@ -127,14 +162,16 @@ var memory = {
         if (matched.length === 30) {
             timer.stop();
 
-            var oldbestMin = localStorage.getItem("bestTimeMins") || 60;
-            var oldbestSec = localStorage.getItem("bestTimeSecs") || 60;
+            if (this.playerNum === 1) {
+                var oldbestMin = localStorage.getItem("bestTimeMins") || 60;
+                var oldbestSec = localStorage.getItem("bestTimeSecs") || 60;
 
-            if (timer.minutes <= oldbestMin) {
-                if (timer.seconds < oldbestSec) {
-                    localStorage.setItem("bestTimeMins", timer.minutes);
-                    localStorage.setItem("bestTimeSecs", timer.seconds);
-                    memory.loadStoredVars();
+                if (timer.minutes <= oldbestMin) {
+                    if (timer.seconds < oldbestSec) {
+                        localStorage.setItem("bestTimeMins", timer.minutes);
+                        localStorage.setItem("bestTimeSecs", timer.seconds);
+                        memory.loadStoredVars();
+                    }
                 }
             }
         }
@@ -149,7 +186,7 @@ var timer = {
     running: false,
     seconds: 0,
     minutes: 0,
-    time: document.querySelector("#time"),
+    time: document.querySelector("#time span"),
     start: function() {
         if (this.running === false) {
             timer.instance = window.setInterval(this.update.bind(this), 1000);
