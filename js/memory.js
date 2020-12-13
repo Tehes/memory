@@ -153,6 +153,10 @@ var memory = {
             })(i);
         }
         setTimeout(this.assignMotifs, 510);
+		var player1 = document.querySelector("#pairs_1 span");
+		var player2 = document.querySelector("#pairs_2 span");
+		player1.textContent = 0;
+		player2.textContent = 0;
         timer.reset();
     },
     solve: function() {
