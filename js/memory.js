@@ -124,8 +124,14 @@ var memory = {
                     var player1 = document.querySelector("#pairs_1");
                     var player2 = document.querySelector("#pairs_2");
 
-                    player1.classList.toggle("active");
-                    player2.classList.toggle("active");
+                    if (this.activePlayer === 1) {
+						player1.classList.add("active");
+						player2.classList.remove("active");
+                    }
+					else if (this.activePlayer === 2) {
+						player2.classList.add("active");
+						player1.classList.remove("active");
+					}
                 }.bind(this), 300);
             }.bind(this), 700);
         }
