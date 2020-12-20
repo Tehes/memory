@@ -27,12 +27,20 @@ Memory Object
 ------------------------------------------------*/
 
 var memory = {
-    playerNum: 2,
+    playerNum: 1,
     activePlayer: 1,
-    init: function() {
-        var askForPlayerNum = prompt("How many players wanna play", 1);
-        this.playerNum = parseInt(askForPlayerNum);
-        if (this.playerNum > 2) { this.playerNum = 2; }
+    setup: function() {
+        var playerButtons = document.querySelectorAll("#setup div");
+
+        playerButtons[0].addEventListener("click", this.init.bind(this, 1));
+        playerButtons[1].addEventListener("click", this.init.bind(this, 2));
+    },
+    init: function(pNum) {
+        var setupScreen = document.querySelector("#setup");
+        setupScreen.style.display = "none";
+
+        this.playerNum = pNum;
+
         this.assignMotifs();
 
         var Grid = document.querySelector("#GameGrid");
@@ -238,4 +246,4 @@ var timer = {
     }
 };
 
-memory.init();
+memory.setup();

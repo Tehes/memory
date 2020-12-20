@@ -44,6 +44,7 @@ header div {
     background-color: #CCC;
     text-align: center;
     min-width: 90px;
+    border-radius: 5px;
 }
 
 header div.active {
@@ -147,6 +148,30 @@ header #restart {
     50% {
         background-color: #96CD82;
     }
+}
+
+#setup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#setup h1 {
+    font-size: 2em;
+    text-shadow: 1px 1px #fff;
+    text-align: center;
+}
+
+#setup div {
+    background-color: #fff;
+    border: 1px solid #999;
+    width: 150px;
+    padding: 10px;
+    margin: 10px auto;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 footer div {
