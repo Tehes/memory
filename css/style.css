@@ -1,8 +1,18 @@
+:root {
+    --background-color: #ddd;
+    --font-color: #333;
+    --button-bg: #ccc;
+    --button-pressed: #bbb;
+    --shadow: #bbb;
+    --card-background: #fff;
+    --text-shadow: #fff;
+    --button-border: #999;
+}
+
 body {
-    background-color: #ddd;
-    color: #999;
+    background-color: var(--background-color);
     font-family: 'Fjalla One', sans-serif;
-    color: #333;
+    color: var(--font-color);
     font-size: 1.1em;
     line-height: 1.5;
     -webkit-user-select: none;
@@ -10,11 +20,13 @@ body {
     -webkit-touch-callout: none;
 }
 
-a:link, a:visited {
+a:link,
+a:visited {
     color: #666;
 }
 
-a:hover, a:active {
+a:hover,
+a:active {
     color: #0288d1;
 }
 
@@ -22,7 +34,7 @@ header {
     max-width: 960px;
     margin: 0 auto;
     box-sizing: border-box;
-    background-color: #ddd;
+    background-color: var(--background-color);
     margin-bottom: 20px;
     padding: 10px;
     border-bottom: 1px solid #999;
@@ -33,7 +45,7 @@ header {
 
 header h3 {
     font-size: 2em;
-    color: #333;
+    color: var(--font-color);
     flex: 1;
     line-height: 1.2;
 }
@@ -41,7 +53,7 @@ header h3 {
 header div {
     padding: 5px 5px 5px 5px;
     margin: 0 5px;
-    background-color: #CCC;
+    background-color: var(--button-bg);
     text-align: center;
     min-width: 90px;
     border-radius: 5px;
@@ -64,7 +76,7 @@ header #restart {
 }
 
 #restart:active {
-    background-color: #BBB;
+    background-color: var(--button-pressed);
 }
 
 #GameGrid {
@@ -99,24 +111,24 @@ header #restart {
     position: absolute;
     top: 0px;
     left: 0px;
-	border-radius: 5px;
-	box-shadow: 2px 2px 2px #bbb;
+    border-radius: 5px;
+    box-shadow: 2px 2px 2px var(--shadow);
 }
 
 .front {
     z-index: 2;
     background: repeating-linear-gradient(-45deg,
-        #03a9f4,
-        #03a9f4 10px,
-        #0288d1 10px,
-        #0288d1 20px);
+            #03a9f4,
+            #03a9f4 10px,
+            #0288d1 10px,
+            #0288d1 20px);
 }
 
 .back {
     z-index: 1;
     transform: rotateY(-180deg);
     background-image: url(../assets/banana.svg);
-    background-color: white;
+    background-color: var(--card-background);
     background-size: 90% 90%;
     background-repeat: no-repeat;
     background-position: center;
@@ -142,8 +154,10 @@ header #restart {
 }
 
 @keyframes matchSignal {
-    0%, 100% {
-        background-color: white;
+
+    0%,
+    100% {
+        background-color: var(--card-background);
     }
 
     50% {
@@ -160,13 +174,13 @@ header #restart {
 
 #setup h1 {
     font-size: 2em;
-    text-shadow: 1px 1px #fff;
+    text-shadow: 1px 1px var(--text-shadow);
     text-align: center;
 }
 
 #setup div {
-    background-color: #fff;
-    border: 1px solid #999;
+    background-color: var(--button-bg);
+    border: 1px solid var(--button-border);
     width: 150px;
     padding: 10px;
     margin: 10px auto;
@@ -190,17 +204,34 @@ footer br {
     header h3 {
         display: none;
     }
+
     header {
         justify-content: space-around;
     }
+
     #restart {
         margin: 0 5px 0 0;
     }
+
     .card {
         flex: 0 1 17%;
         padding-bottom: 17%;
     }
+
     footer br {
         display: block;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-color: #333;
+        --button-bg: #666;
+        --button-pressed: #555;
+        --font-color: #ccc;
+        --shadow: #000;
+        --card-background: #999;
+        --text-shadow: #333;
+        --button-border: #333;
     }
 }
