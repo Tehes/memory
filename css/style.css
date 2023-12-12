@@ -46,8 +46,10 @@ header {
 header h3 {
     font-size: 2em;
     color: var(--font-color);
+    font-weight: 400;
     flex: 1;
     line-height: 1.2;
+    margin: 0;
 }
 
 header div {
@@ -176,6 +178,7 @@ header #restart {
     font-size: 2em;
     text-shadow: 1px 1px var(--text-shadow);
     text-align: center;
+    font-weight: 400;
 }
 
 #setup div {
