@@ -51,7 +51,18 @@
 
 <body>
 	<header>
-		<h3>Memory Game</h3>
+		<h3>Memory</h3>
+		<label class="menu-picker" for="theme">
+			<select id="theme"></select>
+		</label>
+		<span class="menu-picker">
+			<span id="players" class="segmented-toggle">
+				<input type="radio" id="players1" name="players" value="1" checked>
+				<label for="players1">1 Player</label>
+				<input type="radio" id="players2" name="players" value="2">
+				<label for="players2">2 Players</label>
+			</span>
+		</span>
 		<div id="restart">Restart</div>
 		<div id="time">Time: <span>00:00</span></div>
 		<div id="best">Best: <span>--:--</span></div>
@@ -178,11 +189,6 @@
 		<div class="card" id="30">
 			<div class="front cardface"></div>
 			<div class="back cardface"></div>
-		</div>
-		<div id="setup">
-			<h1>How many players want to play?</h1>
-			<div>1 Player</div>
-			<div>2 Players</div>
 		</div>
 	</div>
 

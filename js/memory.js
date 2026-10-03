@@ -29,39 +29,87 @@ Memory Object
 var memory = {
     playerNum: 1,
     activePlayer: 1,
+    theme: "fruits-and-vegetables",
+    themes: {
+        "fruits-and-vegetables": {
+            label: "Fruits & Vegetables",
+            motifs: ["apple", "avocado", "banana", "bell-pepper", "cabbage", "cauliflower", "cherry", "grapes", "kiwi", "orange", "pineapple", "pumpkin", "strawberry", "tomato", "watermelon"]
+        },
+        halloween: {
+            label: "Halloween",
+            motifs: ["bat", "broomstick", "cauldron", "death", "eyeball", "ghost", "gravestone", "hand", "hat", "mummy", "owl", "pumpkin", "skeleton", "spider", "vampire"]
+        }
+    },
+    isResetting: false,
     setup: function() {
-        var playerButtons = document.querySelectorAll("#setup div");
+        var themePicker = document.querySelector("#theme");
+        var playerPicker = document.querySelector("#players");
 
-        playerButtons[0].addEventListener("click", this.init.bind(this, 1));
-        playerButtons[1].addEventListener("click", this.init.bind(this, 2));
+        try {
+            const storedTheme = localStorage.getItem("memory_theme");
+            if (Object.prototype.hasOwnProperty.call(this.themes, storedTheme)) {
+                this.theme = storedTheme;
+            }
+        } catch (error) {
+            console.warn("Could not load the saved theme.", error);
+        }
+
+        Object.keys(this.themes).forEach(function(theme) {
+            var option = document.createElement("option");
+            option.value = theme;
+            option.textContent = this.themes[theme].label;
+            themePicker.appendChild(option);
+        }.bind(this));
+
+        themePicker.value = this.theme;
+        themePicker.addEventListener("change", this.changeTheme.bind(this));
+        playerPicker.querySelector(`input[value="${this.playerNum}"]`).checked = true;
+        playerPicker.addEventListener("change", this.changePlayers.bind(this));
+        document.querySelector("#GameGrid").addEventListener("click", this.selectCards.bind(this));
+        document.querySelector("#restart").addEventListener("click", this.reset.bind(this));
+        document.body.dataset.theme = this.theme;
+        this.init(this.playerNum);
+        this.assignMotifs();
+    },
+    changeTheme: function(e) {
+        var theme = e.target.value;
+        if (!Object.prototype.hasOwnProperty.call(this.themes, theme)) {
+            return;
+        }
+
+        this.theme = theme;
+        document.body.dataset.theme = theme;
+        try {
+            localStorage.setItem("memory_theme", theme);
+        } catch (error) {
+            console.warn("Could not save the selected theme.", error);
+        }
+        this.reset();
+    },
+    changePlayers: function(e) {
+        var playerNum = Number(e.target.value);
+        if ((playerNum !== 1 && playerNum !== 2) || playerNum === this.playerNum) {
+            return;
+        }
+
+        this.init(playerNum);
+        this.reset();
     },
     init: function(pNum) {
-        var setupScreen = document.querySelector("#setup");
-        setupScreen.style.display = "none";
-
         this.playerNum = pNum;
-
-        this.assignMotifs();
-
-        var Grid = document.querySelector("#GameGrid");
-        var restart = document.querySelector("#restart");
 
         var time = document.querySelector("#time");
         var best = document.querySelector("#best");
         var player1 = document.querySelector("#pairs_1");
         var player2 = document.querySelector("#pairs_2");
 
-        Grid.addEventListener("click", this.selectCards.bind(this));
-        restart.addEventListener("click", this.reset.bind(this));
+        time.classList.toggle("hidden", this.playerNum === 2);
+        best.classList.toggle("hidden", this.playerNum === 2);
+        player1.classList.toggle("hidden", this.playerNum === 1);
+        player2.classList.toggle("hidden", this.playerNum === 1);
 
         if (this.playerNum === 1) {
-            document.addEventListener('DOMContentLoaded', this.loadStoredVars);
-        }
-        else if (this.playerNum === 2) {
-            time.classList.toggle("hidden");
-            best.classList.toggle("hidden");
-            player1.classList.toggle("hidden");
-            player2.classList.toggle("hidden");
+            this.loadStoredVars();
         }
     },
     loadStoredVars: function() {
@@ -82,7 +130,7 @@ var memory = {
     assignMotifs: function() {
         var Motifs, Cards, i;
 
-        Motifs = ["apple", "avocado", "banana", "bell-pepper", "cabbage", "cauliflower", "cherry", "grapes", "kiwi", "orange", "pineapple", "pumpkin", "strawberry", "tomato", "watermelon"];
+        Motifs = this.themes[this.theme].motifs;
 
         Motifs = Motifs.concat(Motifs);
         Motifs = shuffle(Motifs);
@@ -90,27 +138,32 @@ var memory = {
         Cards = document.querySelectorAll(".card .back");
 
         for (i = 0; i < Motifs.length; i++) {
-            Cards[i].style.backgroundImage = "url('assets/" + Motifs[i] + ".svg')";
+            Cards[i].style.backgroundImage = "url('assets/themes/" + this.theme + "/" + Motifs[i] + ".svg')";
             Cards[i].parentElement.dataset.name = Motifs[i];
         }
     },
     selectCards: function(e) {
-        var clicked, selection, match;
+        var clicked, selection;
+
+        if (this.isResetting) {
+            return;
+        }
 
         clicked = e.target;
         selection = document.querySelectorAll(".selected");
 
-        if (selection.length < 2) {
-            if (clicked.parentElement.classList.contains("selected") === false &&
-                clicked.classList.contains("front") === true) {
-                clicked.parentElement.classList.add("selected");
-                    timer.start();
-            }
+        if (selection.length >= 2 ||
+            !clicked.classList.contains("front") ||
+            clicked.parentElement.classList.contains("selected")) {
+            return;
         }
+
+        clicked.parentElement.classList.add("selected");
+        timer.start();
 
         selection = document.querySelectorAll(".selected");
         if (selection.length === 2) {
-            setTimeout(function() {
+            this.matchTimeout = setTimeout(function() {
                 if (selection[0].dataset.name === selection[1].dataset.name) {
                     selection[0].classList.add("matched");
                     selection[1].classList.add("matched");
@@ -125,7 +178,7 @@ var memory = {
                         this.activePlayer = ( this.activePlayer == 1 ? 2 : 1);
                     }
                 }
-                setTimeout(function() {
+                this.flipTimeout = setTimeout(function() {
                     selection[1].classList.remove("selected");
                     selection[0].classList.remove("selected");
 
@@ -145,22 +198,26 @@ var memory = {
         }
     },
     reset: function() {
-        var allCards, i, selection, time;
+        var allCards = document.querySelectorAll(".card");
+        var i;
 
-        allCards = document.querySelectorAll(".matched, .selected");
+        clearTimeout(this.matchTimeout);
+        clearTimeout(this.flipTimeout);
+        clearTimeout(this.resetTimeout);
+        this.isResetting = true;
 
         for (i = 0; i < allCards.length; i++) {
-
-            allCards[i].classList.add("selected");
-            allCards[i].classList.remove("matched");
-
-            (function(i) {
-                setTimeout(function() {
-                    allCards[i].classList.remove("selected");
-                }, 10);
-            })(i);
+            allCards[i].classList.remove("matched", "selected");
         }
-        setTimeout(this.assignMotifs, 510);
+
+        this.resetTimeout = setTimeout(function() {
+            this.assignMotifs();
+            this.isResetting = false;
+        }.bind(this), 510);
+
+        this.activePlayer = 1;
+        document.querySelector("#pairs_1").classList.add("active");
+        document.querySelector("#pairs_2").classList.remove("active");
 		var player1 = document.querySelector("#pairs_1 span");
 		var player2 = document.querySelector("#pairs_2 span");
 		player1.textContent = 0;

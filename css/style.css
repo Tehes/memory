@@ -7,6 +7,13 @@
     --card-background: #fff;
     --text-shadow: #fff;
     --button-border: #999;
+    --card-stripe-light: #03a9f4;
+    --card-stripe-dark: #0288d1;
+}
+
+body[data-theme="halloween"] {
+    --card-stripe-light: #d47f28;
+    --card-stripe-dark: #7a5838;
 }
 
 body {
@@ -15,6 +22,7 @@ body {
     color: var(--font-color);
     font-size: 1.1em;
     line-height: 1.5;
+    user-select: none;
     -webkit-user-select: none;
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
@@ -39,6 +47,8 @@ header {
     padding: 10px;
     border-bottom: 1px solid #999;
     display: flex;
+    flex-wrap: wrap;
+    row-gap: 10px;
     align-items: center;
     justify-content: flex-end;
 }
@@ -47,7 +57,7 @@ header h3 {
     font-size: 2em;
     color: var(--font-color);
     font-weight: 400;
-    flex: 1;
+    flex: 1 1 180px;
     line-height: 1.2;
     margin: 0;
 }
@@ -63,6 +73,63 @@ header div {
 
 header div.active {
     border: 1px solid #666;
+}
+
+.menu-picker {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 5px;
+}
+
+.menu-picker select {
+    max-width: 100%;
+    padding: 5px 8px;
+    border: 0;
+    border-radius: 5px;
+    background-color: var(--button-bg);
+    color: var(--font-color);
+    font: inherit;
+    cursor: pointer;
+    color-scheme: light dark;
+}
+
+.menu-picker select:focus-visible {
+    outline: 2px solid var(--font-color);
+    outline-offset: 2px;
+}
+
+.segmented-toggle {
+    display: inline-flex;
+    position: relative;
+    padding: 3px;
+    border: 0;
+    border-radius: 5px;
+    background-color: var(--button-bg);
+}
+
+.segmented-toggle input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
+
+.segmented-toggle label {
+    padding: 2px 8px;
+    border-radius: 3px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.segmented-toggle input:checked + label {
+    background-color: var(--background-color);
+    box-shadow: 0 1px 3px var(--shadow);
+}
+
+.segmented-toggle input:focus-visible + label {
+    outline: 2px solid var(--font-color);
+    outline-offset: 2px;
 }
 
 .hidden {
@@ -120,16 +187,15 @@ header #restart {
 .front {
     z-index: 2;
     background: repeating-linear-gradient(-45deg,
-            #03a9f4,
-            #03a9f4 10px,
-            #0288d1 10px,
-            #0288d1 20px);
+            var(--card-stripe-light),
+            var(--card-stripe-light) 10px,
+            var(--card-stripe-dark) 10px,
+            var(--card-stripe-dark) 20px);
 }
 
 .back {
     z-index: 1;
     transform: rotateY(-180deg);
-    background-image: url(../assets/banana.svg);
     background-color: var(--card-background);
     background-size: 90% 90%;
     background-repeat: no-repeat;
@@ -167,31 +233,6 @@ header #restart {
     }
 }
 
-#setup {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-#setup h1 {
-    font-size: 2em;
-    text-shadow: 1px 1px var(--text-shadow);
-    text-align: center;
-    font-weight: 400;
-}
-
-#setup div {
-    background-color: var(--button-bg);
-    border: 1px solid var(--button-border);
-    width: 150px;
-    padding: 10px;
-    margin: 10px auto;
-    text-align: center;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
 footer div {
     color: #666;
     margin-top: 20px;
@@ -201,6 +242,30 @@ footer div {
 
 footer br {
     display: none;
+}
+
+@media screen and (max-width: 600px) {
+    header h3 {
+        display: none;
+    }
+
+    header {
+        justify-content: center;
+    }
+
+    .menu-picker {
+        flex: 1 1 calc(50% - 10px);
+        min-width: 0;
+        justify-content: center;
+    }
+
+    .segmented-toggle label {
+        padding: 2px 4px;
+    }
+
+    header div {
+        min-width: 70px;
+    }
 }
 
 @media screen and (max-device-width: 480px) and (orientation: portrait) {
