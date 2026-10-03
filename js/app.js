@@ -8,7 +8,7 @@ import { initServiceWorker } from "./service-worker-registration.js";
 Variables
 ---------------------------------------------------------------------------------------------------*/
 const USE_SERVICE_WORKER = true; // enable or disable SW for this project
-const SERVICE_WORKER_VERSION = "2026-10-04-v3"; // bump to force new SW and new cache
+const SERVICE_WORKER_VERSION = "2026-10-04-v4"; // bump to force new SW and new cache
 const AUTO_RELOAD_ON_SW_UPDATE = true; // reload page once after an update
 
 const THEMES = {
@@ -89,18 +89,12 @@ const THEMES = {
 const game = {
 	playerNum: 1,
 	activePlayer: 1,
+	attempts: 0,
 	theme: "fruits-and-vegetables",
 	isResetting: false,
 	matchTimeout: null,
 	flipTimeout: null,
 	resetTimeout: null,
-};
-
-const timer = {
-	running: false,
-	seconds: 0,
-	minutes: 0,
-	instance: null,
 };
 
 let isInitialized = false;
@@ -114,8 +108,8 @@ const ui = {
 	playerPicker: document.querySelector("#players"),
 	grid: document.querySelector("#GameGrid"),
 	restart: document.querySelector("#restart"),
-	time: document.querySelector("#time"),
-	timeValue: document.querySelector("#time span"),
+	attempts: document.querySelector("#attempts"),
+	attemptsValue: document.querySelector("#attempts span"),
 	best: document.querySelector("#best"),
 	bestValue: document.querySelector("#best span"),
 	player1: document.querySelector("#pairs_1"),
@@ -182,26 +176,23 @@ function changePlayers(event) {
 
 function setPlayerMode(playerNum) {
 	game.playerNum = playerNum;
-	ui.time.classList.toggle("hidden", playerNum === 2);
+	ui.attempts.classList.toggle("hidden", playerNum === 2);
 	ui.best.classList.toggle("hidden", playerNum === 2);
 	ui.player1.classList.toggle("hidden", playerNum === 1);
 	ui.player2.classList.toggle("hidden", playerNum === 1);
 
 	if (playerNum === 1) {
-		loadStoredTime();
+		loadStoredAttempts();
 	}
 }
 
-function loadStoredTime() {
-	let bestMin = "--";
-	let bestSec = "--";
+function loadStoredAttempts() {
+	ui.bestValue.textContent = "--";
 	try {
-		bestMin = localStorage.getItem("bestTimeMins") || "--";
-		bestSec = localStorage.getItem("bestTimeSecs") || "--";
+		ui.bestValue.textContent = localStorage.getItem("memory_bestAttempts") ?? "--";
 	} catch (error) {
-		console.warn("Could not load the saved best time.", error);
+		console.warn("Could not load the saved best attempts.", error);
 	}
-	ui.bestValue.textContent = `${bestMin.padStart(2, "0")}:${bestSec.padStart(2, "0")}`;
 }
 
 function createCards() {
@@ -238,9 +229,10 @@ function selectCards(event) {
 	}
 
 	clicked.parentElement.classList.add("selected");
-	startTimer();
 	const selectedCards = ui.grid.querySelectorAll(".selected");
 	if (selectedCards.length === 2) {
+		game.attempts += 1;
+		ui.attemptsValue.textContent = game.attempts;
 		game.matchTimeout = setTimeout(() => {
 			if (selectedCards[0].dataset.name === selectedCards[1].dataset.name) {
 				selectedCards[0].classList.add("matched");
@@ -249,6 +241,7 @@ function selectCards(event) {
 					const pairsCounter = game.activePlayer === 1 ? ui.player1Value : ui.player2Value;
 					pairsCounter.textContent = Number(pairsCounter.textContent) + 1;
 				}
+				isFinished();
 			} else if (game.playerNum === 2) {
 				game.activePlayer = game.activePlayer === 1 ? 2 : 1;
 			}
@@ -278,12 +271,12 @@ function reset() {
 	ui.player2.classList.remove("active");
 	ui.player1Value.textContent = "0";
 	ui.player2Value.textContent = "0";
-	resetTimer();
+	game.attempts = 0;
+	ui.attemptsValue.textContent = "0";
 }
 
 function solve() {
 	ui.cards.forEach((card) => card.classList.add("matched"));
-	isFinished();
 }
 
 function isFinished() {
@@ -291,56 +284,17 @@ function isFinished() {
 		return;
 	}
 
-	stopTimer();
 	if (game.playerNum === 1) {
 		try {
-			const oldBestMin = localStorage.getItem("bestTimeMins") || 60;
-			const oldBestSec = localStorage.getItem("bestTimeSecs") || 60;
-			if (timer.minutes <= oldBestMin && timer.seconds < oldBestSec) {
-				localStorage.setItem("bestTimeMins", timer.minutes);
-				localStorage.setItem("bestTimeSecs", timer.seconds);
-				loadStoredTime();
+			const oldBest = localStorage.getItem("memory_bestAttempts");
+			if (oldBest === null || game.attempts < Number(oldBest)) {
+				localStorage.setItem("memory_bestAttempts", game.attempts);
+				loadStoredAttempts();
 			}
 		} catch (error) {
-			console.warn("Could not save the best time.", error);
+			console.warn("Could not save the best attempts.", error);
 		}
 	}
-}
-
-/* --------------------------------------------------------------------------------------------------
-Timer functions
----------------------------------------------------------------------------------------------------*/
-
-function startTimer() {
-	if (!timer.running) {
-		timer.instance = globalThis.setInterval(updateTimer, 1000);
-		timer.running = true;
-	}
-}
-
-function updateTimer() {
-	timer.seconds += 1;
-	if (timer.seconds === 60) {
-		timer.minutes += 1;
-		timer.seconds = 0;
-	}
-	if (timer.minutes === 60) {
-		stopTimer();
-	}
-	ui.timeValue.textContent = `${String(timer.minutes).padStart(2, "0")}:${String(timer.seconds).padStart(2, "0")}`;
-	isFinished();
-}
-
-function stopTimer() {
-	globalThis.clearInterval(timer.instance);
-	timer.running = false;
-}
-
-function resetTimer() {
-	stopTimer();
-	timer.seconds = 0;
-	timer.minutes = 0;
-	ui.timeValue.textContent = "00:00";
 }
 
 /* --------------------------------------------------------------------------------------------------

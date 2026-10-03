@@ -1,7 +1,7 @@
 # Memory – A Matching Game
 
 Memory is a browser-based version of the classic matching game: turn over two cards, remember what you see, and find all
-15 pairs. Play against the clock on your own or challenge a second player on the same device.
+15 pairs. Find them in as few attempts as possible on your own or challenge a second player on the same device.
 
 🔗 **Play Here:** [Memory](https://tehes.github.io/memory/)
 
@@ -9,10 +9,10 @@ Memory is a browser-based version of the classic matching game: turn over two ca
 
 ## ✨ Features
 
-- **Single-player challenge:** Find all pairs as quickly as possible and try to beat your saved best time.
+- **Single-player challenge:** Find all pairs in as few attempts as possible and try to beat your saved best.
 - **Local two-player mode:** Take turns, collect pairs, and compete for the higher score.
 - **Selectable themes:** Choose between **Fruits & Vegetables**, **Halloween**, and **Animals**, each with 15 different motifs.
-- **Remembered preferences:** Your selected theme and single-player best time are saved in the browser.
+- **Remembered preferences:** Your selected theme and single-player best attempt count are saved in the browser.
 - **Animated cards:** Cards flip to reveal their motifs, and matching pairs stay face up.
 - **Responsive design & dark mode:** Play on phones, tablets, or desktop browsers, with colors that follow your system
   preference.
@@ -29,8 +29,9 @@ Memory is a browser-based version of the classic matching game: turn over two ca
 
 ### Single Player
 
-The clock starts with your first card. Finding the final pair stops the timer. Your best time is saved locally and
-shared across all themes.
+Each time you reveal a second card, it counts as one attempt, whether the cards match or not. Finding the final pair
+saves your attempt count if it is lower than your previous best. Your best is saved locally and shared across all themes.
+Previous best times remain stored separately and are not converted into attempts.
 
 ### Two Players
 
@@ -53,7 +54,7 @@ project folder with a static server such as VS Code's Live Server and open `inde
 ├── css/
 │   └── style.css        # Layout, theme colors, and animations
 ├── js/
-│   ├── app.js           # Module entry point, game logic, timer, and storage
+│   ├── app.js           # Module entry point, game logic, attempt counter, and storage
 │   └── service-worker-registration.js  # Service Worker registration and updates
 ├── service-worker.js    # Dynamic caching for offline use
 ├── icons/              # Browser favicons
