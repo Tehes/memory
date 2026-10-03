@@ -33,10 +33,12 @@ var memory = {
     themes: {
         "fruits-and-vegetables": {
             label: "Fruits & Vegetables",
+            creditTemplate: "fruitsCredit",
             motifs: ["apple", "avocado", "banana", "bell-pepper", "cabbage", "cauliflower", "cherry", "grapes", "kiwi", "orange", "pineapple", "pumpkin", "strawberry", "tomato", "watermelon"]
         },
         halloween: {
             label: "Halloween",
+            creditTemplate: "halloweenCredit",
             motifs: ["bat", "broomstick", "cauldron", "death", "eyeball", "ghost", "gravestone", "hand", "hat", "mummy", "owl", "pumpkin", "skeleton", "spider", "vampire"]
         }
     },
@@ -68,6 +70,7 @@ var memory = {
         document.querySelector("#GameGrid").addEventListener("click", this.selectCards.bind(this));
         document.querySelector("#restart").addEventListener("click", this.reset.bind(this));
         document.body.dataset.theme = this.theme;
+        this.updateThemeCredit();
         this.init(this.playerNum);
         this.assignMotifs();
     },
@@ -79,12 +82,18 @@ var memory = {
 
         this.theme = theme;
         document.body.dataset.theme = theme;
+        this.updateThemeCredit();
         try {
             localStorage.setItem("memory_theme", theme);
         } catch (error) {
             console.warn("Could not save the selected theme.", error);
         }
         this.reset();
+    },
+    updateThemeCredit: function() {
+        const credit = document.querySelector("#themeCredit");
+        const template = document.getElementById(this.themes[this.theme].creditTemplate);
+        credit.replaceChildren(template.content.cloneNode(true));
     },
     changePlayers: function(e) {
         var playerNum = Number(e.target.value);

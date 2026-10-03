@@ -241,15 +241,32 @@ header #restart {
     }
 }
 
-footer div {
+footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    max-width: 960px;
+    box-sizing: border-box;
+    margin: 20px auto 0;
+    padding: 0 10px 10px;
     color: #666;
-    margin-top: 20px;
-    text-align: center;
     font-size: 0.8em;
 }
 
-footer br {
-    display: none;
+footer .social-links {
+    display: flex;
+    flex-shrink: 0;
+    gap: 12px;
+}
+
+footer .social-links img {
+    display: block;
+    opacity: 0.7;
+}
+
+footer #themeCredit {
+    text-align: right;
 }
 
 @media screen and (max-width: 600px) {
@@ -292,10 +309,6 @@ footer br {
         flex: 0 1 17%;
         padding-bottom: 17%;
     }
-
-    footer br {
-        display: block;
-    }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -308,5 +321,9 @@ footer br {
         --card-background: #999;
         --text-shadow: #333;
         --button-border: #333;
+    }
+
+    footer .social-links img {
+        filter: invert(1);
     }
 }
