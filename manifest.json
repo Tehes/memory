@@ -4,18 +4,15 @@
     "description": "A simple memory matching game",
     "icons": [
         {
-            "src": "icons/favicon.svg",
-            "type": "image/svg+xml",
-            "sizes": "any"
-        },
-        {
-            "src": "icons/180x180.png",
+            "src": "assets/app-icon/app-icon.png",
             "type": "image/png",
             "sizes": "180x180"
         }
     ],
     "start_url": "index.html",
-    "background_color": "#eee",
+    "scope": "./",
+    "background_color": "#ddd",
     "display": "standalone",
-    "theme_color": "#eee"
+    "orientation": "any",
+    "theme_color": "#ddd"
 }

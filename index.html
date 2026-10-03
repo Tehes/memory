@@ -1,215 +1,90 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
+	<head>
+		<!-- Meta Tags -->
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Memory</title>
+		<meta name="description" content="This is a Memory Game, built with HTML5, CSS and Javascript" />
+		<meta name="keywords" content="Memory, Game" />
+		<meta name="author" content="Tino Sabetta" />
 
-<head>
-	<title>Memory</title>
+		<!-- Web App -->
+		<link rel="manifest" href="manifest.json">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<link rel="apple-touch-icon" href="assets/app-icon/app-icon.png">
+		<!-- Splash Screens -->
+		<link href="assets/splashscreens/iphone6_splash.png"
+			media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)"
+			rel="apple-touch-startup-image" />
+		<link href="assets/splashscreens/iphoneplus_splash.png"
+			media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)"
+			rel="apple-touch-startup-image" />
+		<link href="assets/splashscreens/iphonex_splash.png"
+			media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)"
+			rel="apple-touch-startup-image" />
+		<link href="assets/splashscreens/ipad_splash.png"
+			media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)"
+			rel="apple-touch-startup-image" />
+		<link href="assets/splashscreens/ipadpro1_splash.png"
+			media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)"
+			rel="apple-touch-startup-image" />
+		<link href="assets/splashscreens/ipadpro2_splash.png"
+			media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)"
+			rel="apple-touch-startup-image" />
 
-	<!-- Meta Tags -->
-	<meta charset="utf-8" />
-	<meta name="description" content="This is a Memory Game, built with HTML5, CSS and Javascript" />
-	<meta name="keywords" content="Memory, Game" />
-	<meta name="author" content="Tino Sabetta" />
+		<!-- Favicon -->
+		<link rel="icon" href="icons/favicon.png" type="image/png" />
 
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<!-- CSS -->
+		<link href="https://fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet">
+		<link rel="stylesheet" href="css/style.css" media="screen" />
 
-	<!-- Web App -->
-	<meta name="apple-mobile-web-app-capable" content="yes">
-	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-	<link rel="apple-touch-icon" href="assets/app-icon/app-icon.png">
-	<!-- Splash Screens -->
-	<link href="assets/splashscreens/iphone6_splash.png"
-		media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)"
-		rel="apple-touch-startup-image" />
-	<link href="assets/splashscreens/iphoneplus_splash.png"
-		media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)"
-		rel="apple-touch-startup-image" />
-	<link href="assets/splashscreens/iphonex_splash.png"
-		media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)"
-		rel="apple-touch-startup-image" />
-	<link href="assets/splashscreens/ipad_splash.png"
-		media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)"
-		rel="apple-touch-startup-image" />
-	<link href="assets/splashscreens/ipadpro1_splash.png"
-		media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)"
-		rel="apple-touch-startup-image" />
-	<link href="assets/splashscreens/ipadpro2_splash.png"
-		media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)"
-		rel="apple-touch-startup-image" />
+		<!-- JavaScript -->
+		<script defer src="https://cloud.umami.is/script.js"
+			data-website-id="2392a451-203c-4d8a-a4f5-bd7d06f832af"></script>
+		<script type="module" src="js/app.js"></script>
+	</head>
 
-	<!-- Favicon -->
-	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-
-	<!-- CSS -->
-	<!-- <link rel="stylesheet" href="css/reset.css" media="screen" /> -->
-	<link href="https://fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet">
-	<link rel="stylesheet" href="css/style.css" media="screen" />
-
-	<!-- Javascript -->
-	<script defer src="https://cloud.umami.is/script.js"
-		data-website-id="2392a451-203c-4d8a-a4f5-bd7d06f832af"></script>
-</head>
-
-<body>
-	<header>
-		<h3>Memory</h3>
-		<label class="menu-picker" for="theme">
-			<select id="theme"></select>
-		</label>
-		<span class="menu-picker">
-			<span id="players" class="segmented-toggle">
-				<input type="radio" id="players1" name="players" value="1" checked>
-				<label for="players1">1 Player</label>
-				<input type="radio" id="players2" name="players" value="2">
-				<label for="players2">2 Players</label>
+	<body>
+		<header>
+			<h1>Memory</h1>
+			<label class="menu-picker" for="theme">
+				<select id="theme"></select>
+			</label>
+			<span class="menu-picker">
+				<span id="players" class="segmented-toggle">
+					<input type="radio" id="players1" name="players" value="1" checked>
+					<label for="players1">1 Player</label>
+					<input type="radio" id="players2" name="players" value="2">
+					<label for="players2">2 Players</label>
+				</span>
 			</span>
-		</span>
-		<div id="restart">Restart</div>
-		<div id="time">Time: <span>00:00</span></div>
-		<div id="best">Best: <span>--:--</span></div>
-		<div id="pairs_1" class="hidden active">Player 1: <span>0</span></div>
-		<div id="pairs_2" class="hidden">Player 2: <span>0</span></div>
-	</header>
-	<div id="GameGrid">
-		<div class="card" id="1">
-			<div class="front cardface"></div>
-			<div class="back cardface"></div>
-		</div>
-		<div class="card" id="2">
-			<div class="front cardface"></div>
-			<div class="back cardface"></div>
-		</div>
-		<div class="card" id="3">
-			<div class="front cardface"></div>
-			<div class="back cardface"></div>
-		</div>
-		<div class="card" id="4">
-			<div class="front cardface"></div>
-			<div class="back cardface"></div>
-		</div>
-		<div class="card" id="5">
-			<div class="front cardface"></div>
-			<div class="back cardface"></div>
-		</div>
-		<div class="card" id="6">
-			<div class="front cardface"></div>
-			<div class="back cardface"></div>
-		</div>
-		<div class="card" id="7">
-			<div class="front cardface"></div>
-			<div class="back cardface"></div>
-		</div>
-		<div class="card" id="8">
-			<div class="front cardface"></div>
-			<div class="back cardface"></div>
-		</div>
-		<div class="card" id="9">
-			<div class="front cardface"></div>
-			<div class="back cardface"></div>
-		</div>
-		<div class="card" id="10">
-			<div class="front cardface"></div>
-			<div class="back cardface"></div>
-		</div>
-		<div class="card" id="11">
-			<div class="front cardface"></div>
-			<div class="back cardface"></div>
-		</div>
-		<div class="card" id="12">
-			<div class="front cardface"></div>
-			<div class="back cardface"></div>
-		</div>
-		<div class="card" id="13">
-			<div class="front cardface"></div>
-			<div class="back cardface"></div>
-		</div>
-		<div class="card" id="14">
-			<div class="front cardface"></div>
-			<div class="back cardface"></div>
-		</div>
-		<div class="card" id="15">
-			<div class="front cardface"></div>
-			<div class="back cardface"></div>
-		</div>
-		<div class="card" id="16">
-			<div class="front cardface"></div>
-			<div class="back cardface"></div>
-		</div>
-		<div class="card" id="17">
-			<div class="front cardface"></div>
-			<div class="back cardface"></div>
-		</div>
-		<div class="card" id="18">
-			<div class="front cardface"></div>
-			<div class="back cardface"></div>
-		</div>
-		<div class="card" id="19">
-			<div class="front cardface"></div>
-			<div class="back cardface"></div>
-		</div>
-		<div class="card" id="20">
-			<div class="front cardface"></div>
-			<div class="back cardface"></div>
-		</div>
-		<div class="card" id="21">
-			<div class="front cardface"></div>
-			<div class="back cardface"></div>
-		</div>
-		<div class="card" id="22">
-			<div class="front cardface"></div>
-			<div class="back cardface"></div>
-		</div>
-		<div class="card" id="23">
-			<div class="front cardface"></div>
-			<div class="back cardface"></div>
-		</div>
-		<div class="card" id="24">
-			<div class="front cardface"></div>
-			<div class="back cardface"></div>
-		</div>
-		<div class="card" id="25">
-			<div class="front cardface"></div>
-			<div class="back cardface"></div>
-		</div>
-		<div class="card" id="26">
-			<div class="front cardface"></div>
-			<div class="back cardface"></div>
-		</div>
-		<div class="card" id="27">
-			<div class="front cardface"></div>
-			<div class="back cardface"></div>
-		</div>
-		<div class="card" id="28">
-			<div class="front cardface"></div>
-			<div class="back cardface"></div>
-		</div>
-		<div class="card" id="29">
-			<div class="front cardface"></div>
-			<div class="back cardface"></div>
-		</div>
-		<div class="card" id="30">
-			<div class="front cardface"></div>
-			<div class="back cardface"></div>
-		</div>
-	</div>
+			<button id="restart" type="button">Restart</button>
+			<div id="time">Time: <span>00:00</span></div>
+			<div id="best">Best: <span>--:--</span></div>
+			<div id="pairs_1" class="hidden active">Player 1: <span>0</span></div>
+			<div id="pairs_2" class="hidden">Player 2: <span>0</span></div>
+		</header>
+		<main id="GameGrid"></main>
 
-	<footer>
-		<div class="social-links">
-			<a href="https://www.threads.com/@tehes83" title="Threads">
-				<img src="svg/threads.svg" alt="Threads" width="24" height="24">
-			</a>
-			<a href="https://github.com/Tehes" title="GitHub">
-				<img src="svg/github.svg" alt="GitHub" width="24" height="24">
-			</a>
-		</div>
-		<div id="themeCredit"></div>
-	</footer>
-	<template id="fruitsCredit">
-		Icons from <a href="https://www.flaticon.com/packs/fruits-and-vegetables-14" title="Flaticon">Flaticon</a>
-	</template>
-	<template id="halloweenCredit">
-		Icons from <a href="https://www.svgrepo.com/collection/halloween-scary-vectors/" title="SVG Repo">SVG Repo</a>
-	</template>
-	<script src="js/memory.js"></script>
-</body>
-
+		<footer>
+			<div class="social-links">
+				<a href="https://www.threads.com/@tehes83" title="Threads">
+					<img src="svg/threads.svg" alt="Threads" width="24" height="24">
+				</a>
+				<a href="https://github.com/Tehes" title="GitHub">
+					<img src="svg/github.svg" alt="GitHub" width="24" height="24">
+				</a>
+			</div>
+			<div id="themeCredit">Icons from <a></a></div>
+		</footer>
+		<template id="cardTemplate">
+			<div class="card">
+				<div class="front cardface"></div>
+				<div class="back cardface"></div>
+			</div>
+		</template>
+	</body>
 </html>

@@ -11,11 +11,12 @@ Memory is a browser-based version of the classic matching game: turn over two ca
 
 - **Single-player challenge:** Find all pairs as quickly as possible and try to beat your saved best time.
 - **Local two-player mode:** Take turns, collect pairs, and compete for the higher score.
-- **Selectable themes:** Choose between **Fruits & Vegetables** and **Halloween**, each with 15 different motifs.
+- **Selectable themes:** Choose between **Fruits & Vegetables**, **Halloween**, and **Animals**, each with 15 different motifs.
 - **Remembered preferences:** Your selected theme and single-player best time are saved in the browser.
 - **Animated cards:** Cards flip to reveal their motifs, and matching pairs stay face up.
 - **Responsive design & dark mode:** Play on phones, tablets, or desktop browsers, with colors that follow your system
   preference.
+- **Offline play:** Previously loaded files and themes can be used offline through the Service Worker.
 
 ---
 
@@ -29,7 +30,7 @@ Memory is a browser-based version of the classic matching game: turn over two ca
 ### Single Player
 
 The clock starts with your first card. Finding the final pair stops the timer. Your best time is saved locally and
-shared across both themes.
+shared across all themes.
 
 ### Two Players
 
@@ -43,21 +44,32 @@ Use **Restart** to shuffle the cards and start again. Changing the theme or play
 
 ## 🛠️ For Developers
 
-The game uses plain HTML, CSS, and JavaScript, with no frameworks or build step. To run it locally, serve the project
-folder with a static server such as VS Code's Live Server and open `index.html`.
+The game uses plain HTML, CSS, and JavaScript modules, with no frameworks or build step. To run it locally, serve the
+project folder with a static server such as VS Code's Live Server and open `index.html`.
 
 ```text
-├── index.html          # Game board and controls
+├── index.html          # Game layout, controls, and templates
+├── manifest.json       # Web app name, icon, start URL, and display settings
 ├── css/
 │   └── style.css        # Layout, theme colors, and animations
 ├── js/
-│   └── memory.js        # Game logic, scoring, timer, and storage
+│   ├── app.js           # Module entry point, game logic, timer, and storage
+│   └── service-worker-registration.js  # Service Worker registration and updates
+├── service-worker.js    # Dynamic caching for offline use
+├── icons/              # Browser favicons
+├── svg/                # Footer social icons
 └── assets/
     └── themes/          # SVG card motifs and source references
 ```
 
-Themes and their motif lists are defined in `memory.themes` in `js/memory.js`. Each active theme contains 15 motifs,
+Themes and their motif lists are defined in `THEMES` in `js/app.js`. Each active theme contains 15 motifs,
 loaded from `assets/themes/<theme>/<motif>.svg`.
+
+The Service Worker is enabled in `js/app.js` and caches files dynamically after it takes control of the page. After
+the first online visit, wait for registration and reload normally, then open each theme you want to use offline.
+Only previously loaded URLs are available offline; no asset list is maintained. Service Workers require HTTPS or
+localhost, and registration is intentionally skipped on GitHub Pages user root URLs. Bump `SERVICE_WORKER_VERSION`
+in `js/app.js` with each subsequent code commit.
 
 ---
 
@@ -74,8 +86,8 @@ Third-party artwork retains its original licenses and attribution requirements.
 ## 🙏 Credits
 
 - **Fruits & Vegetables:** Icons by Freepik from Flaticon's
-  [Fruits and Vegetables pack](https://www.flaticon.com/packs/fruits-and-vegetables-14), credited in the game under CC
-  BY 3.0.
+  [Fruits and Vegetables pack](https://www.flaticon.com/packs/fruits-and-vegetables-14)
+  ([CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)).
 - **Halloween:** [Halloween Scary Vectors](https://www.svgrepo.com/collection/halloween-scary-vectors/) from SVG Repo.
-- **Additional animal assets:**
+- **Animals:**
   [Animal Outlined Sepia Icons](https://www.svgrepo.com/collection/animal-outlined-sepia-icons/) from SVG Repo.
