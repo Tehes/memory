@@ -39,6 +39,7 @@ a:active {
 }
 
 header {
+    --menu-control-height: 44px;
     max-width: 960px;
     margin: 0 auto;
     box-sizing: border-box;
@@ -48,7 +49,7 @@ header {
     border-bottom: 1px solid #999;
     display: flex;
     flex-wrap: wrap;
-    row-gap: 10px;
+    gap: 10px;
     align-items: center;
     justify-content: flex-end;
 }
@@ -63,11 +64,16 @@ header h3 {
 }
 
 header div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    box-sizing: border-box;
+    height: var(--menu-control-height);
     padding: 5px 5px 5px 5px;
-    margin: 0 5px;
     background-color: var(--button-bg);
     text-align: center;
-    min-width: 90px;
+    min-width: 100px;
     border-radius: 5px;
 }
 
@@ -79,13 +85,15 @@ header div.active {
     display: flex;
     align-items: center;
     gap: 8px;
-    margin: 0 5px;
 }
 
 .menu-picker select {
+    box-sizing: border-box;
+    height: var(--menu-control-height);
     max-width: 100%;
     padding: 5px 8px;
     border: 0;
+    border-right: 8px solid transparent;
     border-radius: 5px;
     background-color: var(--button-bg);
     color: var(--font-color);
@@ -102,7 +110,9 @@ header div.active {
 .segmented-toggle {
     display: inline-flex;
     position: relative;
-    padding: 3px;
+    box-sizing: border-box;
+    height: var(--menu-control-height);
+    padding: 4px;
     border: 0;
     border-radius: 5px;
     background-color: var(--button-bg);
@@ -116,7 +126,10 @@ header div.active {
 }
 
 .segmented-toggle label {
-    padding: 2px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 12px;
     border-radius: 3px;
     cursor: pointer;
     white-space: nowrap;
@@ -124,7 +137,6 @@ header div.active {
 
 .segmented-toggle input:checked + label {
     background-color: var(--background-color);
-    box-shadow: 0 1px 3px var(--shadow);
 }
 
 .segmented-toggle input:focus-visible + label {
@@ -134,10 +146,6 @@ header div.active {
 
 .hidden {
     display: none;
-}
-
-header div:last-child {
-    margin: 0 0 0 5px;
 }
 
 header #restart {
@@ -254,31 +262,30 @@ footer br {
     }
 
     .menu-picker {
-        flex: 1 1 calc(50% - 10px);
+        flex: 1 1 calc(50% - 5px);
         min-width: 0;
         justify-content: center;
     }
 
+    .menu-picker select,
+    .segmented-toggle {
+        width: 100%;
+    }
+
     .segmented-toggle label {
-        padding: 2px 4px;
+        flex: 1;
+        padding: 4px 6px;
     }
 
     header div {
-        min-width: 70px;
+        flex: 1 1 80px;
+        min-width: 80px;
     }
 }
 
 @media screen and (max-device-width: 480px) and (orientation: portrait) {
     header h3 {
         display: none;
-    }
-
-    header {
-        justify-content: space-around;
-    }
-
-    #restart {
-        margin: 0 5px 0 0;
     }
 
     .card {
