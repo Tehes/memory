@@ -8,7 +8,7 @@ import { initServiceWorker } from "./service-worker-registration.js";
 Variables
 ---------------------------------------------------------------------------------------------------*/
 const USE_SERVICE_WORKER = true; // enable or disable SW for this project
-const SERVICE_WORKER_VERSION = "2026-10-04-v2"; // bump to force new SW and new cache
+const SERVICE_WORKER_VERSION = "2026-10-04-v3"; // bump to force new SW and new cache
 const AUTO_RELOAD_ON_SW_UPDATE = true; // reload page once after an update
 
 const THEMES = {
