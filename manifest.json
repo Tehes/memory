@@ -1,0 +1,21 @@
+{
+    "short_name": "Memory",
+    "name": "Memory",
+    "description": "A simple memory matching game",
+    "icons": [
+        {
+            "src": "icons/favicon.svg",
+            "type": "image/svg+xml",
+            "sizes": "any"
+        },
+        {
+            "src": "icons/180x180.png",
+            "type": "image/png",
+            "sizes": "180x180"
+        }
+    ],
+    "start_url": "index.html",
+    "background_color": "#eee",
+    "display": "standalone",
+    "theme_color": "#eee"
+}

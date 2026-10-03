@@ -1,0 +1,19 @@
+{
+    "fmt": {
+        "useTabs": true,
+        "indentWidth": 4,
+        "lineWidth": 120,
+        "singleQuote": false,
+        "semiColons": true
+    },
+    "lint": {
+        "rules": {
+            "tags": [
+                "recommended"
+            ]
+        }
+    },
+    "tasks": {
+        "start": "deno run -A xxx.js"
+    }
+}
