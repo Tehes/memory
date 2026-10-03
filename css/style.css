@@ -1,4 +1,7 @@
 :root {
+    --content-width: 960px;
+    --content-padding: 10px;
+    --section-gap: 20px;
     --background-color: #ddd;
     --font-color: #333;
     --button-bg: #ccc;
@@ -38,15 +41,20 @@ a:active {
     color: #0288d1;
 }
 
+header,
+#GameGrid,
+footer {
+    max-width: var(--content-width);
+    box-sizing: border-box;
+    margin-inline: auto;
+    padding-inline: var(--content-padding);
+}
+
 header {
     --menu-control-height: 44px;
-    max-width: 960px;
-    margin: 0 auto;
-    box-sizing: border-box;
     background-color: var(--background-color);
-    margin-bottom: 20px;
-    padding: 10px;
-    border-bottom: 1px solid #999;
+    margin-block: 0 var(--section-gap);
+    padding-block: var(--content-padding);
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
@@ -70,7 +78,7 @@ header div {
     gap: 4px;
     box-sizing: border-box;
     height: var(--menu-control-height);
-    padding: 5px 5px 5px 5px;
+    padding: 5px;
     background-color: var(--button-bg);
     text-align: center;
     min-width: 100px;
@@ -157,37 +165,27 @@ header #restart {
 }
 
 #GameGrid {
-    max-width: 1020px;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-    margin: 0 auto;
+    --card-gap: clamp(6px, 2vw, var(--section-gap));
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: var(--card-gap);
     perspective: 1700px;
     -webkit-tap-highlight-color: transparent;
 }
 
 .card {
     box-sizing: border-box;
-    margin: 1%;
-    flex: 0 1 14%;
-    height: 0;
-    padding-bottom: 14%;
+    aspect-ratio: 1;
     position: relative;
     transform-style: preserve-3d;
 }
 
 .cardface {
-    width: 100%;
-    height: 100%;
     transition: transform .5s;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     position: absolute;
-    top: 0px;
-    left: 0px;
+    inset: 0;
     border-radius: 5px;
     box-shadow: 2px 2px 2px var(--shadow);
 }
@@ -246,10 +244,8 @@ footer {
     justify-content: space-between;
     align-items: center;
     gap: 20px;
-    max-width: 960px;
-    box-sizing: border-box;
-    margin: 20px auto 0;
-    padding: 0 10px 10px;
+    margin-block: var(--section-gap) 0;
+    padding-bottom: var(--content-padding);
     color: #666;
     font-size: 0.8em;
 }
@@ -300,14 +296,9 @@ footer #themeCredit {
     }
 }
 
-@media screen and (max-device-width: 480px) and (orientation: portrait) {
-    header h3 {
-        display: none;
-    }
-
-    .card {
-        flex: 0 1 17%;
-        padding-bottom: 17%;
+@media screen and (orientation: portrait) {
+    #GameGrid {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
     }
 }
 
