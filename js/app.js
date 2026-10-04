@@ -142,7 +142,7 @@ function shuffle(array) {
 
 function changeTheme(event) {
 	const theme = event.target.value;
-	if (!Object.prototype.hasOwnProperty.call(THEMES, theme)) {
+	if (!Object.hasOwn(THEMES, theme)) {
 		return;
 	}
 
@@ -309,7 +309,7 @@ function init() {
 
 	try {
 		const storedTheme = localStorage.getItem("memory_theme");
-		if (Object.prototype.hasOwnProperty.call(THEMES, storedTheme)) {
+		if (Object.hasOwn(THEMES, storedTheme)) {
 			game.theme = storedTheme;
 		}
 	} catch (error) {
