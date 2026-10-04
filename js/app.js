@@ -8,7 +8,7 @@ import { initServiceWorker } from "./service-worker-registration.js";
 Variables
 ---------------------------------------------------------------------------------------------------*/
 const USE_SERVICE_WORKER = true; // enable or disable SW for this project
-const SERVICE_WORKER_VERSION = "2026-10-04-v5"; // bump to force new SW and new cache
+const SERVICE_WORKER_VERSION = "2026-10-04-v6"; // bump to force new SW and new cache
 const AUTO_RELOAD_ON_SW_UPDATE = true; // reload page once after an update
 
 const THEMES = {
@@ -90,6 +90,9 @@ const game = {
 	playerNum: 1,
 	activePlayer: 1,
 	moves: 0,
+	cards: [],
+	selectedCards: [],
+	pairs: [0, 0],
 	theme: "fruits-and-vegetables",
 	isResetting: false,
 	matchTimeout: null,
@@ -211,45 +214,68 @@ function createCards() {
 function assignMotifs() {
 	const themeMotifs = THEMES[game.theme].motifs;
 	const motifs = shuffle(themeMotifs.concat(themeMotifs));
+	game.cards = motifs.map((motif) => ({ motif, matched: false }));
 
-	ui.backs.forEach((card, index) => {
-		card.style.backgroundImage = `url("assets/themes/${game.theme}/${motifs[index]}.svg")`;
-		card.parentElement.dataset.name = motifs[index];
+	ui.backs.forEach((back, index) => {
+		back.style.backgroundImage = `url("assets/themes/${game.theme}/${game.cards[index].motif}.svg")`;
 	});
+	renderCards();
+}
+
+function renderCards() {
+	ui.cards.forEach((card, index) => {
+		card.classList.toggle("selected", game.selectedCards.includes(index));
+		card.classList.toggle("matched", game.cards[index].matched);
+	});
+}
+
+function renderScores() {
+	ui.movesValue.textContent = game.moves;
+	ui.player1Value.textContent = game.pairs[0];
+	ui.player2Value.textContent = game.pairs[1];
+	ui.player1.classList.toggle("active", game.activePlayer === 1);
+	ui.player2.classList.toggle("active", game.activePlayer === 2);
 }
 
 function selectCards(event) {
 	const clicked = event.target;
-	const selection = ui.grid.querySelectorAll(".selected");
 	if (
-		game.isResetting || selection.length >= 2 ||
-		!clicked.classList.contains("front") || clicked.parentElement.classList.contains("selected")
+		game.isResetting || game.selectedCards.length >= 2 ||
+		!clicked.classList.contains("front")
 	) {
 		return;
 	}
 
-	clicked.parentElement.classList.add("selected");
-	const selectedCards = ui.grid.querySelectorAll(".selected");
-	if (selectedCards.length === 2) {
+	const cardIndex = Number(clicked.parentElement.id) - 1;
+	if (game.cards[cardIndex].matched || game.selectedCards.includes(cardIndex)) {
+		return;
+	}
+
+	game.selectedCards.push(cardIndex);
+	renderCards();
+	if (game.selectedCards.length === 2) {
+		const [firstCard, secondCard] = game.selectedCards.map((index) => game.cards[index]);
 		game.moves += 1;
-		ui.movesValue.textContent = game.moves;
+		renderScores();
 		game.matchTimeout = setTimeout(() => {
-			if (selectedCards[0].dataset.name === selectedCards[1].dataset.name) {
-				selectedCards[0].classList.add("matched");
-				selectedCards[1].classList.add("matched");
+			const isMatch = firstCard.motif === secondCard.motif;
+			if (isMatch) {
+				firstCard.matched = true;
+				secondCard.matched = true;
 				if (game.playerNum === 2) {
-					const pairsCounter = game.activePlayer === 1 ? ui.player1Value : ui.player2Value;
-					pairsCounter.textContent = Number(pairsCounter.textContent) + 1;
+					game.pairs[game.activePlayer - 1] += 1;
 				}
+				renderCards();
+				renderScores();
 				isFinished();
-			} else if (game.playerNum === 2) {
-				game.activePlayer = game.activePlayer === 1 ? 2 : 1;
 			}
 			game.flipTimeout = setTimeout(() => {
-				selectedCards[0].classList.remove("selected");
-				selectedCards[1].classList.remove("selected");
-				ui.player1.classList.toggle("active", game.activePlayer === 1);
-				ui.player2.classList.toggle("active", game.activePlayer === 2);
+				if (!isMatch && game.playerNum === 2) {
+					game.activePlayer = game.activePlayer === 1 ? 2 : 1;
+				}
+				game.selectedCards = [];
+				renderCards();
+				renderScores();
 			}, 300);
 		}, 700);
 	}
@@ -260,27 +286,38 @@ function reset() {
 	clearTimeout(game.flipTimeout);
 	clearTimeout(game.resetTimeout);
 	game.isResetting = true;
-	ui.cards.forEach((card) => card.classList.remove("matched", "selected"));
+	game.selectedCards = [];
+	game.cards.forEach((card) => {
+		card.matched = false;
+	});
+	game.activePlayer = 1;
+	game.pairs = [0, 0];
+	game.moves = 0;
+	renderCards();
+	renderScores();
 	game.resetTimeout = setTimeout(() => {
 		assignMotifs();
 		game.isResetting = false;
 	}, 510);
-
-	game.activePlayer = 1;
-	ui.player1.classList.add("active");
-	ui.player2.classList.remove("active");
-	ui.player1Value.textContent = "0";
-	ui.player2Value.textContent = "0";
-	game.moves = 0;
-	ui.movesValue.textContent = "0";
 }
 
 function solve() {
-	ui.cards.forEach((card) => card.classList.add("matched"));
+	if (game.isResetting) {
+		return;
+	}
+
+	clearTimeout(game.matchTimeout);
+	clearTimeout(game.flipTimeout);
+	game.selectedCards = [];
+	game.cards.forEach((card) => {
+		card.matched = true;
+	});
+	renderCards();
+	renderScores();
 }
 
 function isFinished() {
-	if (ui.grid.querySelectorAll(".matched").length !== ui.cards.length) {
+	if (!game.cards.every((card) => card.matched)) {
 		return;
 	}
 
@@ -333,6 +370,7 @@ function init() {
 	setPlayerMode(game.playerNum);
 	createCards();
 	assignMotifs();
+	renderScores();
 
 	initServiceWorker({
 		useServiceWorker: USE_SERVICE_WORKER,
