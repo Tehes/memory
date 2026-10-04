@@ -8,8 +8,9 @@ import { initServiceWorker } from "./service-worker-registration.js";
 Variables
 ---------------------------------------------------------------------------------------------------*/
 const USE_SERVICE_WORKER = true; // enable or disable SW for this project
-const SERVICE_WORKER_VERSION = "2026-10-04-v6"; // bump to force new SW and new cache
+const SERVICE_WORKER_VERSION = "2026-10-04-v7"; // bump to force new SW and new cache
 const AUTO_RELOAD_ON_SW_UPDATE = true; // reload page once after an update
+const PAIR_VIEW_TIME_MS = 500;
 
 const THEMES = {
 	"fruits-and-vegetables": {
@@ -95,9 +96,8 @@ const game = {
 	pairs: [0, 0],
 	theme: "fruits-and-vegetables",
 	isResetting: false,
-	matchTimeout: null,
-	flipTimeout: null,
-	resetTimeout: null,
+	isResolving: false,
+	roundId: 0,
 };
 
 let isInitialized = false;
@@ -237,10 +237,56 @@ function renderScores() {
 	ui.player2.classList.toggle("active", game.activePlayer === 2);
 }
 
+async function waitForCardAnimations(elements = [ui.grid]) {
+	const animations = elements.flatMap((element) => element.getAnimations({ subtree: true }));
+	const results = await Promise.allSettled(animations.map((animation) => animation.finished));
+	for (const result of results) {
+		// Resetting a card can cancel its current transition.
+		if (result.status === "rejected" && result.reason.name !== "AbortError") {
+			console.warn("Could not finish a card animation.", result.reason);
+		}
+	}
+}
+
+async function resolveSelection() {
+	const roundId = game.roundId;
+	const [firstCard, secondCard] = game.selectedCards.map((index) => game.cards[index]);
+	const cardElements = game.selectedCards.map((index) => ui.cards[index]);
+	game.isResolving = true;
+
+	await waitForCardAnimations(cardElements);
+	if (roundId !== game.roundId) {
+		return;
+	}
+
+	await new Promise((resolve) => setTimeout(resolve, PAIR_VIEW_TIME_MS));
+	if (roundId !== game.roundId) {
+		return;
+	}
+
+	const isMatch = firstCard.motif === secondCard.motif;
+	if (isMatch) {
+		firstCard.matched = true;
+		secondCard.matched = true;
+		if (game.playerNum === 2) {
+			game.pairs[game.activePlayer - 1] += 1;
+		}
+	} else if (game.playerNum === 2) {
+		game.activePlayer = game.activePlayer === 1 ? 2 : 1;
+	}
+	game.selectedCards = [];
+	game.isResolving = false;
+	renderCards();
+	renderScores();
+	if (isMatch) {
+		isFinished();
+	}
+}
+
 function selectCards(event) {
 	const clicked = event.target;
 	if (
-		game.isResetting || game.selectedCards.length >= 2 ||
+		game.isResetting || game.isResolving ||
 		!clicked.classList.contains("front")
 	) {
 		return;
@@ -254,38 +300,17 @@ function selectCards(event) {
 	game.selectedCards.push(cardIndex);
 	renderCards();
 	if (game.selectedCards.length === 2) {
-		const [firstCard, secondCard] = game.selectedCards.map((index) => game.cards[index]);
 		game.moves += 1;
 		renderScores();
-		game.matchTimeout = setTimeout(() => {
-			const isMatch = firstCard.motif === secondCard.motif;
-			if (isMatch) {
-				firstCard.matched = true;
-				secondCard.matched = true;
-				if (game.playerNum === 2) {
-					game.pairs[game.activePlayer - 1] += 1;
-				}
-				renderCards();
-				renderScores();
-				isFinished();
-			}
-			game.flipTimeout = setTimeout(() => {
-				if (!isMatch && game.playerNum === 2) {
-					game.activePlayer = game.activePlayer === 1 ? 2 : 1;
-				}
-				game.selectedCards = [];
-				renderCards();
-				renderScores();
-			}, 300);
-		}, 700);
+		resolveSelection();
 	}
 }
 
-function reset() {
-	clearTimeout(game.matchTimeout);
-	clearTimeout(game.flipTimeout);
-	clearTimeout(game.resetTimeout);
+async function reset() {
+	game.roundId += 1;
+	const roundId = game.roundId;
 	game.isResetting = true;
+	game.isResolving = false;
 	game.selectedCards = [];
 	game.cards.forEach((card) => {
 		card.matched = false;
@@ -295,10 +320,13 @@ function reset() {
 	game.moves = 0;
 	renderCards();
 	renderScores();
-	game.resetTimeout = setTimeout(() => {
-		assignMotifs();
-		game.isResetting = false;
-	}, 510);
+
+	await waitForCardAnimations();
+	if (roundId !== game.roundId) {
+		return;
+	}
+	assignMotifs();
+	game.isResetting = false;
 }
 
 function solve() {
@@ -306,8 +334,8 @@ function solve() {
 		return;
 	}
 
-	clearTimeout(game.matchTimeout);
-	clearTimeout(game.flipTimeout);
+	game.roundId += 1;
+	game.isResolving = false;
 	game.selectedCards = [];
 	game.cards.forEach((card) => {
 		card.matched = true;

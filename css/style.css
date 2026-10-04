@@ -12,6 +12,8 @@
     --button-border: #999;
     --card-stripe-light: #03a9f4;
     --card-stripe-dark: #0288d1;
+    --flip-duration: 500ms;
+    --match-duration: 500ms;
 }
 
 body[data-theme="halloween"] {
@@ -198,7 +200,7 @@ header #restart {
 }
 
 .cardface {
-    transition: transform .5s;
+    transition: transform var(--flip-duration);
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     position: absolute;
@@ -241,7 +243,7 @@ header #restart {
 
 .matched .back {
     transform: rotateY(0deg);
-    animation: matchSignal 0.5s;
+    animation: matchSignal var(--match-duration);
 }
 
 @keyframes matchSignal {
