@@ -14,6 +14,7 @@
     --card-stripe-dark: #0288d1;
     --flip-duration: 500ms;
     --match-duration: 500ms;
+    --match-color: #96CD82;
 }
 
 body[data-theme="halloween"] {
@@ -246,6 +247,10 @@ header #restart {
     animation: matchSignal var(--match-duration);
 }
 
+#GameGrid.victory .back {
+    animation: victorySignal var(--match-duration) var(--victory-delay);
+}
+
 @keyframes matchSignal {
 
     0%,
@@ -254,7 +259,19 @@ header #restart {
     }
 
     50% {
-        background-color: #96CD82;
+        background-color: var(--match-color);
+    }
+}
+
+@keyframes victorySignal {
+
+    0%,
+    100% {
+        background-color: var(--card-background);
+    }
+
+    50% {
+        background-color: var(--match-color);
     }
 }
 

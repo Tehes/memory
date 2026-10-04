@@ -8,9 +8,10 @@ import { initServiceWorker } from "./service-worker-registration.js";
 Variables
 ---------------------------------------------------------------------------------------------------*/
 const USE_SERVICE_WORKER = true; // enable or disable SW for this project
-const SERVICE_WORKER_VERSION = "2026-10-04-v7"; // bump to force new SW and new cache
+const SERVICE_WORKER_VERSION = "2026-10-04-v8"; // bump to force new SW and new cache
 const AUTO_RELOAD_ON_SW_UPDATE = true; // reload page once after an update
 const PAIR_VIEW_TIME_MS = 500;
+const VICTORY_COLUMN_DELAY_MS = 120;
 
 const THEMES = {
 	"fruits-and-vegetables": {
@@ -248,6 +249,20 @@ async function waitForCardAnimations(elements = [ui.grid]) {
 	}
 }
 
+async function playVictoryAnimation() {
+	const roundId = game.roundId;
+	await waitForCardAnimations();
+	if (roundId !== game.roundId) {
+		return;
+	}
+
+	const columnCount = getComputedStyle(ui.grid).gridTemplateColumns.split(" ").length;
+	ui.cards.forEach((card, index) => {
+		card.style.setProperty("--victory-delay", `${(index % columnCount) * VICTORY_COLUMN_DELAY_MS}ms`);
+	});
+	ui.grid.classList.add("victory");
+}
+
 async function resolveSelection() {
 	const roundId = game.roundId;
 	const [firstCard, secondCard] = game.selectedCards.map((index) => game.cards[index]);
@@ -309,6 +324,7 @@ function selectCards(event) {
 async function reset() {
 	game.roundId += 1;
 	const roundId = game.roundId;
+	ui.grid.classList.remove("victory");
 	game.isResetting = true;
 	game.isResolving = false;
 	game.selectedCards = [];
@@ -335,6 +351,7 @@ function solve() {
 	}
 
 	game.roundId += 1;
+	ui.grid.classList.remove("victory");
 	game.isResolving = false;
 	game.selectedCards = [];
 	game.cards.forEach((card) => {
@@ -342,12 +359,15 @@ function solve() {
 	});
 	renderCards();
 	renderScores();
+	playVictoryAnimation();
 }
 
 function isFinished() {
 	if (!game.cards.every((card) => card.matched)) {
 		return;
 	}
+
+	playVictoryAnimation();
 
 	if (game.playerNum === 1) {
 		try {
