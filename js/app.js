@@ -8,7 +8,7 @@ import { initServiceWorker } from "./service-worker-registration.js";
 Variables
 ---------------------------------------------------------------------------------------------------*/
 const USE_SERVICE_WORKER = true; // enable or disable SW for this project
-const SERVICE_WORKER_VERSION = "2026-10-04-v4"; // bump to force new SW and new cache
+const SERVICE_WORKER_VERSION = "2026-10-04-v5"; // bump to force new SW and new cache
 const AUTO_RELOAD_ON_SW_UPDATE = true; // reload page once after an update
 
 const THEMES = {
@@ -89,7 +89,7 @@ const THEMES = {
 const game = {
 	playerNum: 1,
 	activePlayer: 1,
-	attempts: 0,
+	moves: 0,
 	theme: "fruits-and-vegetables",
 	isResetting: false,
 	matchTimeout: null,
@@ -108,8 +108,8 @@ const ui = {
 	playerPicker: document.querySelector("#players"),
 	grid: document.querySelector("#GameGrid"),
 	restart: document.querySelector("#restart"),
-	attempts: document.querySelector("#attempts"),
-	attemptsValue: document.querySelector("#attempts span"),
+	moves: document.querySelector("#moves"),
+	movesValue: document.querySelector("#moves span"),
 	best: document.querySelector("#best"),
 	bestValue: document.querySelector("#best span"),
 	player1: document.querySelector("#pairs_1"),
@@ -176,22 +176,22 @@ function changePlayers(event) {
 
 function setPlayerMode(playerNum) {
 	game.playerNum = playerNum;
-	ui.attempts.classList.toggle("hidden", playerNum === 2);
+	ui.moves.classList.toggle("hidden", playerNum === 2);
 	ui.best.classList.toggle("hidden", playerNum === 2);
 	ui.player1.classList.toggle("hidden", playerNum === 1);
 	ui.player2.classList.toggle("hidden", playerNum === 1);
 
 	if (playerNum === 1) {
-		loadStoredAttempts();
+		loadStoredMoves();
 	}
 }
 
-function loadStoredAttempts() {
+function loadStoredMoves() {
 	ui.bestValue.textContent = "--";
 	try {
-		ui.bestValue.textContent = localStorage.getItem("memory_bestAttempts") ?? "--";
+		ui.bestValue.textContent = localStorage.getItem("memory_bestMoves") ?? "--";
 	} catch (error) {
-		console.warn("Could not load the saved best attempts.", error);
+		console.warn("Could not load the saved best moves.", error);
 	}
 }
 
@@ -231,8 +231,8 @@ function selectCards(event) {
 	clicked.parentElement.classList.add("selected");
 	const selectedCards = ui.grid.querySelectorAll(".selected");
 	if (selectedCards.length === 2) {
-		game.attempts += 1;
-		ui.attemptsValue.textContent = game.attempts;
+		game.moves += 1;
+		ui.movesValue.textContent = game.moves;
 		game.matchTimeout = setTimeout(() => {
 			if (selectedCards[0].dataset.name === selectedCards[1].dataset.name) {
 				selectedCards[0].classList.add("matched");
@@ -271,8 +271,8 @@ function reset() {
 	ui.player2.classList.remove("active");
 	ui.player1Value.textContent = "0";
 	ui.player2Value.textContent = "0";
-	game.attempts = 0;
-	ui.attemptsValue.textContent = "0";
+	game.moves = 0;
+	ui.movesValue.textContent = "0";
 }
 
 function solve() {
@@ -286,13 +286,13 @@ function isFinished() {
 
 	if (game.playerNum === 1) {
 		try {
-			const oldBest = localStorage.getItem("memory_bestAttempts");
-			if (oldBest === null || game.attempts < Number(oldBest)) {
-				localStorage.setItem("memory_bestAttempts", game.attempts);
-				loadStoredAttempts();
+			const oldBest = localStorage.getItem("memory_bestMoves");
+			if (oldBest === null || game.moves < Number(oldBest)) {
+				localStorage.setItem("memory_bestMoves", game.moves);
+				loadStoredMoves();
 			}
 		} catch (error) {
-			console.warn("Could not save the best attempts.", error);
+			console.warn("Could not save the best moves.", error);
 		}
 	}
 }
